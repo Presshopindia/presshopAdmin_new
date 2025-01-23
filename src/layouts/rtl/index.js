@@ -161,8 +161,8 @@ export default function Dashboard(props) {
             </Box>
           ) : null}
           <Box>
+            {/* TODO: Need to find missing footer */}
             {/* <Footer /> */}
-            Footer
           </Box>
         </Box>
       </SidebarContext.Provider>
