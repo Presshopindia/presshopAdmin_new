@@ -1,18 +1,17 @@
+// Libraries
 import React, { useState, useEffect } from "react";
-
-import { useHistory } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import emailic from "assets/img/icons/email.svg";
-// Chakra imports
+import { RiEyeCloseLine } from "react-icons/ri";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   FormControl,
-  FormLabel,
   Grid,
   GridItem,
   Heading,
@@ -20,34 +19,31 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Text,
-  useColorModeValue,
+  Text
 } from "@chakra-ui/react";
+
+// Components
+import Loader from "components/Loader";
 import SignNHeader from "components/SignNHeader/SignNHeader";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { RiEyeCloseLine } from "react-icons/ri";
-import { useAuth } from "../../../auth-context/auth.context";
-import AuthApi from "../../../api/auth";
-import signimg from "assets/img/signimages/signimg1.svg";
-import lockic from "assets/img/icons/lock.svg";
+
+// Apis / Methods / Styles / Static file / Hooks
 import { Post } from "api/admin.services";
-import { v4 as uuidv4 } from 'uuid';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import AuthApi from "../../../api/auth";
+import { useAuth } from "../../../auth-context/auth.context";
+import lockic from "assets/img/icons/lock.svg";
+import emailic from "assets/img/icons/email.svg";
+import signimg from "assets/img/signimages/signimg1.svg";
 
-
-
-
+// Sign in function
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(undefined);
-  const history = useHistory();
-  const { setUser } = useAuth();
-  const textColor = useColorModeValue("#000", "white");
-  const textColorSecondary = "gray.400";
-  const textColorBrand = useColorModeValue("#EC4E54");
+  const [loading, setLoading] = useState(false);
   const [deviceId, setDeviceId] = useState('');
   const [show, setShow] = React.useState(false);
+  const history = useHistory();
+  const { setUser } = useAuth();
   const handleClick = () => setShow(!show);
 
   const login = async (event) => {
@@ -62,30 +58,27 @@ function SignIn() {
     }
     try {
       const auth = getAuth();
-
+      setLoading(true);
       let response = await AuthApi.Login({ email, password });
       if (response.status === 200) {
         const currentTime = new Date().toString();
         sessionStorage.setItem('loginTime', currentTime);
         setProfile(response);
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in successfully
-            const user = userCredential.user;
-
-          })
+        signInWithEmailAndPassword(auth, email, password);
+        setLoading(false);
       } else if (response.data && response.data.success === false) {
+        setLoading(false);
         return setError(response.data.msg);
       }
     } catch (err) {
       if (err.message) {
+        setLoading(false);
         toast.error(err.response.data.errors.msg[0].msg, {
           position: toast.POSITION.TOP_CENTER
         })
       }
     }
   };
-
 
   const setProfile = async (response) => {
     toast.success("Welcome to Presshop’s admin platform",);
@@ -118,9 +111,6 @@ function SignIn() {
     if (localStorage.getItem("DeviceToken")) {
       try {
         await Post("admin/add/fcm", formdata)
-          .then((resp) => {
-            // console.log("resp", resp)
-          })
       }
       catch (error) {
         // console.log(error)
@@ -130,6 +120,7 @@ function SignIn() {
 
   return (
     <>
+    {loading && <Loader/>}
       <SignNHeader />
       <div className="signn_wrap">
         <Grid templateColumns='repeat(2, 1fr)' gap={0}>
@@ -176,7 +167,6 @@ function SignIn() {
                 <Flex
                   zIndex='2'
                   direction='column'
-                  // w={{ base: "100%", md: "420px" }}
                   maxW='100%'
                   w='100%'
                   background='transparent'
@@ -205,7 +195,6 @@ function SignIn() {
                       mb='0px'>
                       <div className="signinp1">
                         <div
-                          marginBottom='25px'
                           className="sign_inner_inputs">
                           <img src={emailic} className="input_ic" alt="Email" />
                           <Input
@@ -232,7 +221,6 @@ function SignIn() {
                       </div>
                       <div className="signinp1">
                         <div
-                          marginBottom='0px'
                           className="sign_inner_inputs">
                           <img src={lockic} className="input_ic" alt="Email" />
                           <InputGroup size='md'>
