@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { createContext } from "react";
+import { useContext, useEffect, useState, createContext, useMemo } from "react";
 import {
   query,
   orderBy,
@@ -13,11 +12,10 @@ export const PendingMsgContext = createContext();
 
 //context provider
 export const PendingMsgProvider = ({ children }) => {
-  let [pendingChats, setPendingChats] = React.useState(null);
-  const [fireStoreChats, setFireChats] = useState(null);
-  const [notificationOther, setNotificationOther] = useState(null);
+  let [pendingChats, setPendingChats] = useState(null);
+  const [fireStoreChat, setFireStoreChat] = useState(null);
   const [pendingNotifications, setPendingNotifications] = useState(null);
-  const [upadteChatNotificationn, setUpdateChatNotification] = useState(false);
+  const [updateChatNotification, setUpdateChatNotification] = useState(false);
 
 
   const { profile } = useContext(dataContext);
@@ -32,7 +30,7 @@ export const PendingMsgProvider = ({ children }) => {
         data: doc.data(),
       }));
 
-      setFireChats(chats);
+      setFireStoreChat(chats);
 
       // return chats;
     } catch (error) {
@@ -43,66 +41,53 @@ export const PendingMsgProvider = ({ children }) => {
 
   //getting list for extracting pending unseen msg
   const getNotificationOTHERS = async () => {
-   
+
     try {
       await Get(`admin/getnotification?type=received&limit=5`).then(
         (res) => {
-          // console.log("check", res?.data?.data)
-          setNotificationOther(res?.data?.data);
           setPendingNotifications(res?.data?.unreadCount);
         }
       );
     } catch (error) {
-    //  console.log(error)
+      //  console.log(error)
     }
   };
 
   useEffect(() => {
     getChat();
     getNotificationOTHERS();
-  }, [upadteChatNotificationn]);
+  }, [updateChatNotification]);
 
   useEffect(() => {
-    if (fireStoreChats) {
+    if (fireStoreChat) {
       let pendingmsg = 0;
-      fireStoreChats
+      fireStoreChat
         .map((obj) => obj.data)
         .forEach((obj) => {
-          if (obj?.readStatus === "unread" && obj?.receiverId === profile?._id ) {
+          if (obj?.readStatus === "unread" && obj?.receiverId === profile?._id) {
             pendingmsg++;
           }
         });
       setPendingChats(pendingmsg);
     }
-  }, [fireStoreChats, upadteChatNotificationn]);
-
-  // useEffect(() => {
-  //   if (notificationOther) {
-  //     let pendingNotif  = 0;
-  //     notificationOther
-  //       .forEach((obj) => {
-  //         if (obj?.is_read === false){
-           
-  //           pendingNotif++;
-  //         }
-  //       });
-  //       setPendingNotifications(pendingNotif);
-  //   }
-  // }, [notificationOther]);
+  }, [fireStoreChat, updateChatNotification]);
 
   return (
     <PendingMsgContext.Provider
-      value={{
-        pendingChats,
-        setPendingChats,
-        pendingNotifications,
-        setPendingNotifications,
-        setUpdateChatNotification,
-      }}
+      value={useMemo(
+        () => ({
+          pendingChats,
+          setPendingChats,
+          pendingNotifications,
+          setPendingNotifications,
+          setUpdateChatNotification,
+        }),
+        [pendingChats, setPendingChats, pendingNotifications, setPendingNotifications, setUpdateChatNotification]
+      )}
     >
       {children}
     </PendingMsgContext.Provider>
   );
 };
 
-export const useMsgContext = () => React.useContext(PendingMsgContext);
+export const useMsgContext = () => useContext(PendingMsgContext);
