@@ -5,7 +5,6 @@
     --bs-text-medium: "AirbnbMedium" !important;
     --bs-text-light: "Airbnb" !important;
     --bs-text-bold: "AirbnbBold" !important;
-    /* --bs-border-color: rgba(135, 140, 189, 0.3) !important; */
     --bs-border-color: #DEE7E6 !important;
     --bs-inactive-grey: #838383 !important;
     --bs-orange: #FFB547;
@@ -28,8 +27,6 @@
     width: 15px;
     object-fit: contain;
     position: absolute;
-    /* right: 14px;
-    bottom: 40px; */
     right: 25px;
     bottom: 20px;
 }
@@ -40,7 +37,6 @@
 
 .Cardfeed_container {
     flex: 0 0 285px;
-    /* width: 285px; */
     width: 100%;
     height: auto;
     background-color: var(--bs-white);
@@ -73,9 +69,6 @@
 }
 
 .feedMedia_icons .feedIcons {
-    background: rgba(63, 78, 76, 0.696484);
-    padding: 6px;
-    border-radius: 12px;
     background: rgba(63, 78, 76, 0.696484);
     padding: 6px;
     border-radius: 12px;
@@ -122,7 +115,6 @@
     align-items: center;
     color: var(--bs-inactive-grey);
     display: flex;
-    font-family: "AirbnbMedium";
     font-size: 12px;
     margin-bottom: 5px;
     letter-spacing: 0;
@@ -329,7 +321,6 @@ img.icn {
 .invoice_wrapper .payment_d_wrap .Payment_txt {
     font-size: 12px;
     font-family: var(--bs-text-light);
-    /* line-height: 14px; */
     text-align: right;
 }
 
@@ -376,9 +367,6 @@ td.text_center {
     width: 135px;
 }
 
-/* .invoice_wrapper .common_table td {
-    padding: 10px 10px;
-} */
 .invoice_wrapper.trnscn_dlt_tbl .common_table td {
     padding: 10px 10px 20px;
 }
@@ -428,7 +416,6 @@ td.text_center {
 
 
 /* ---Admin_Registration--css-- */
-
 .chakra-input__group.chkra_password_grp,
 .select_wrapper {
     background: #FFFFFF;
@@ -501,15 +488,12 @@ button.chakra-button.admin_dtl_save {
     font-size: 14px;
     color: white;
     font-family: var(--bs-text-bold);
-    /* font-family: var(--new-font);
-    font-weight: bold; */
     border-radius: 8px;
 }
 
 .select_wrapper {
     position: relative;
     flex: 0.4;
-    /* flex: 1; */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -561,8 +545,4 @@ input.chakra-input.chkra_inpu_pass {
 
 .Payment_txt.pt_sml {
     padding-top: 2px;
-}
-
-.chakra-input.css-x1msal {
-    border: 1px solid var(--bs-inp-border);
 }
