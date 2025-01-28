@@ -1,9 +1,11 @@
 import axios from "./index";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL
+let base = "users";
+
 class AuthApi {
   static Login = (data) => {
-    // return axios.post(`${base}/login`, data);
-    return axios.post(`https://uat.presshop.live:5020/auth/admin/login`, data);
+    return axios.post(`${BASE_URL}auth/admin/login`, data);
   };
   static Register = (data) => {
     return axios.post(`${base}/register`, data);
@@ -14,6 +16,5 @@ class AuthApi {
   };
 }
 
-let base = "users";
 
 export default AuthApi;

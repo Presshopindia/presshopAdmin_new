@@ -30,16 +30,14 @@ axios.interceptors.response.use(
       toast.error("Session Expired, Plesse login again");
       window.location.reload();
       window.location.href = "/"
-    } else {
-      if (typeof error.response.data == "string") {
-        toast.error(error.response.data.errors.msg[0].msg, {
-          position: toast.POSITION.TOP_CENTER
-        })
-      } else if (typeof error.response.data == "object") {
-        toast.error(error.response.data.errors.msg, {
-          position: toast.POSITION.TOP_CENTER
-        });
-      }
+    } else if (typeof error.response.data == "string") {
+      toast.error(error.response.data.errors.msg[0].msg, {
+        position: toast.POSITION.TOP_CENTER
+      })
+    } else if (typeof error.response.data == "object") {
+      toast.error(error.response.data.errors.msg, {
+        position: toast.POSITION.TOP_CENTER
+      });
     }
     return Promise.reject(error);
   }
