@@ -8,13 +8,9 @@ import {
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
-// import Profile from "views/admin/profile";
 import Hopers from "./views/admin/Hoppers/Hopers";
-// import Billing from "./views/admin/Billing/BillingandAccount";
-// import Internalmanagement from "./views/admin/Internalmanagement/Internalmanagement";
 import AdminControls from "views/admin/Admincontrols/AdminControls";
 
-// import Onboarding from "./views/admin/Onboarding/Onboarding";
 import Content from "./views/admin/Content";
 import Chat from "views/admin/Chat/Chat";
 import EmployeeRegistration from "views/admin/EmployeeRegistration/EmployeeRegistration";
@@ -23,7 +19,6 @@ import EmployeeRegistration from "views/admin/EmployeeRegistration/EmployeeRegis
 import LiveTasks from "views/admin/LiveTasks/LiveTasks";
 import SignIn from "views/auth/SignN/SignN";
 import ForgotPassword from "views/auth/ForgotPasswordN/ForgotPasswordN";
-// import ResetPassword from "views/auth/resetPassword/index.jsx";
 import dashboardic from "../src/assets/img/icons/home.png";
 import contentic from "./assets/img/icons/content.png";
 import publicationic from "./assets/img/icons/publication.png";
@@ -32,8 +27,6 @@ import invoicingic from "./assets/img/icons/invoicing.png";
 import chatic from "./assets/img/icons/chat.png";
 import controlsic from "./assets/img/icons/admincontrols.svg";
 import logoutic from "./assets/img/icons/logout.png";
-// import AdminReg from "assets/img/icons/AdminReg.svg";
-// import Hopperedit from "./views/admin/Hoppers/Hopperedit";
 import PublishedContent from "./views/admin/Hoppers/PublishedContent";
 import Publications from "./views/admin/Publications/Publications";
 
@@ -44,10 +37,7 @@ import Uploadedcontentlist from "./views/admin/Uploadedcontentlist/Uploadedconte
 import Invoicingandpayments from "./views/admin/Invoicingandpayments/Invoicingandpayments";
 import InvoiceTransaction from "./views/admin/InvoiceTransaction/InvoiceTransaction";
 import PaymentTransation from "./views/admin/PaymentTransation/PaymentTransation";
-import Avatarmanagement from "views/admin/Avatarmanagement/AvatarsN";
 import LiveUploadedContent from "views/admin/Content/LiveUploadedContent";
-// import Notifications from "views/admin/Notifications/Notifications";
-// import ViewNotification from "views/admin/Notifications/ViewNotification";
 import notifyic from "assets/img/icons/notification.svg";
 import HopperTaskControlHistory from "views/admin/Hoppers/HopperTaskControlHistory";
 import HopperControlHistory from "views/admin/Hoppers/HopperControlHistory";
@@ -58,20 +48,15 @@ import HopperUploadedContent from "views/admin/Hoppers/HopperUploadedContent";
 import UploadedContentHistory from "views/admin/Hoppers/UploadedContentHistory";
 import PublicationControlHistory from "views/admin/Publications/PublicationControlHistory";
 import PurchasedContentHistory from "views/admin/Publications/PurchasedContentHistory";
-// import CategoryManagement from "views/admin/CategoryManagement/CategoryManagement";
 import categoryic from "assets/img/icons/category.svg";
 import empreg from "assets/img/icons/empreg.svg";
 import avatarsic from "assets/img/icons/avatars.svg";
-// import generalic from "assets/img/icons/general.svg";
 import PurchasedContentful from "views/admin/Publications/PurchasedContentful";
 import SourcedContentful from "views/admin/Publications/SourcedContentful";
 import AvatarsN from "views/admin/Avatarmanagement/AvatarsN";
-import SignN from "views/auth/SignN/SignN";
-import ForgotPasswordN from "views/auth/ForgotPasswordN/ForgotPasswordN";
 import SourcedContentHistory from './views/admin/Publications/SourcedContentHistory'
 
 import ContentOnboardingHistory from "views/admin/Content/ContentOnboardingHistory";
-// import PublishedContenHistory from "views/admin/Content/Published Content Summary";
 import ContentPublishedHistory from "views/admin/Content/PublishedContenHistory"
 import UploadedContentSummaryHistory from "views/admin/Content/UploadedContentSummaryHistory";
 import ManageCategories from "views/admin/CategoryManagement/ManageCategories";
@@ -116,14 +101,23 @@ const routes = [
     name: "Manage publications",
     layout: "/admin",
     path: "/publications-management",
-    icon: (
+    icon: <button
+      onClick={() => localStorage.setItem("special_navigate", false)}
+      style={{
+        background: "none",
+        border: "none",
+        padding: 0,
+        cursor: "pointer",
+      }}
+      aria-label="Navigate to Publication"
+    >
       <img
         src={publicationic}
-        width='20px'
-        height='20px' alt="noimage"
-        onClick={() => localStorage.setItem("special_navigate", false)}
+        width="20px"
+        height="20px"
+        alt="noimage"
       />
-    ),
+    </button>,
     component: Publications,
     secondary: true,
   },
@@ -141,17 +135,6 @@ const routes = [
     component: PurchasedContentHistory,
     hide: true,
   },
-
-  // 
-  // {
-  // name: "Manage content",
-  // layout: "/admin",
-  // path: "/content-onboarding-history/:id",
-  // component: ContentOnboardingHistory,
-  // hide: true,
-  // },
-
-
   {
     name: "Manage hoppers",
     layout: "/admin",
@@ -164,14 +147,23 @@ const routes = [
     name: "Manage hoppers",
     layout: "/admin",
     path: "/hoppers",
-    icon: (
+    icon: <button
+      onClick={() => localStorage.setItem("special_navigate", false)}
+      style={{
+        background: "none",
+        border: "none",
+        padding: 0,
+        cursor: "pointer",
+      }}
+      aria-label="Navigate to Hopper"
+    >
       <img
         src={hopperic}
-        width='20px'
-        height='20px' alt="noimage"
-        onClick={() => localStorage.setItem("special_navigate", false)}
+        width="20px"
+        height="20px"
+        alt="hopper"
       />
-    ),
+    </button>,
     component: Hopers,
     secondary: true,
   },
@@ -269,15 +261,23 @@ const routes = [
     name: "Chat",
     layout: "/admin",
     path: "/chat",
-    icon: (
+    icon: <button
+      onClick={() => localStorage.setItem("special_navigate", false)}
+      style={{
+        background: "none",
+        border: "none",
+        padding: 0,
+        cursor: "pointer",
+      }}
+      aria-label="Navigate to chat"
+    >
       <img
         src={chatic}
-        width='20px'
-        height='20px' alt="noimage"
-        color='inherit'
-        onClick={() => localStorage.setItem("special_navigate", false)}
+        width="20px"
+        height="20px"
+        alt="Chat Icon"
       />
-    ),
+    </button>,
     component: Chat,
     secondary: true,
   },

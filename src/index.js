@@ -17,8 +17,8 @@ import { requestForToken } from "components/NotificationToken";
 import { PendingMsgProvider } from "contexts/PendindMsgContext";
 
 
-let user = localStorage.getItem("user");
-user = JSON.parse(user);
+const user = JSON.parse(localStorage.getItem("user"));
+
 ReactDOM.render(
   <ChakraProvider theme={theme}>
     <Data>

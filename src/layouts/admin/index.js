@@ -1,3 +1,5 @@
+import { useMemo, useState } from "react";
+import { Redirect, Route, Switch, useLocation, useParams } from "react-router-dom";
 // Chakra imports
 import { Portal, Box, useDisclosure } from "@chakra-ui/react";
 import Footer from "components/footer/FooterAdmin.js";
@@ -5,19 +7,12 @@ import Footer from "components/footer/FooterAdmin.js";
 import Navbar from "components/navbar/NavbarAdmin.js";
 import Sidebar from "components/sidebar/Sidebar.js";
 import { SidebarContext } from "contexts/SidebarContext";
-import React, { useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
-import {Link, Routes, useLocation, useParams} from 'react-router-dom';
-import { io } from "socket.io-client";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // import "../../assets/css/App.css";
 // Custom Chakra theme
 export default function Dashboard(props) {
-  const location = useLocation();
-  const params = useParams()
-  
   const { ...rest } = props;
   // states and functions
   const [fixed] = useState(false);
@@ -27,17 +22,15 @@ export default function Dashboard(props) {
     return window.location.pathname !== "/admin/full-screen-maps";
 
   };
-  
-
 
   const getActiveRoute = (routes) => {
     let activeRoute = "";
 
     for (let i = 0; i < routes.length; i++) {
-      
+
 
       if (routes[i].collapse) {
-        
+
         let collapseActiveRoute = getActiveRoute(routes[i].items);
         if (collapseActiveRoute !== activeRoute) {
           return collapseActiveRoute;
@@ -61,10 +54,10 @@ export default function Dashboard(props) {
 
         }
         // else if(dynamicRoutes.indexOf(routes[i].layout + routes[i].path) !== -1 ){
-          
+
         //   console.log(  window.location.href,`<---------------hrfed`)
 
-          
+
         // }
       }
     }
@@ -119,13 +112,13 @@ export default function Dashboard(props) {
   };
 
   const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
+    return routes.map((prop) => {
       if (prop.layout === "/admin") {
         return (
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
-            key={key}
+            key={prop?.id}
           />
         );
       }
@@ -142,37 +135,17 @@ export default function Dashboard(props) {
   document.documentElement.dir = "ltr";
   const { onOpen } = useDisclosure();
 
-
-
-
-  const socketServer = "https://uat.presshop.live:3005"
-  const [socket, setSocket] = useState(null);
-
-
-  // // Connect Socket- 
-  // useEffect(() => {
-  //   setSocket(io(socketServer));
-  // }, [])
-
-  // useEffect(() => {
-  //   socket?.emit("addAdmin", JSON.parse(localStorage.getItem("user")));
-  //   socket?.on("getAdmins", (data) => {
-  //     console.log("data12312312312", data)
-  //   })
-  // }, [socket])
-
-
-
-
-
-
   return (
     <Box>
       <SidebarContext.Provider
-        value={{
-          toggleSidebar,
-          setToggleSidebar,
-        }}>
+        value={useMemo(
+          () => ({
+            toggleSidebar,
+            setToggleSidebar,
+          }),
+          [toggleSidebar, setToggleSidebar]
+        )}
+      >
         <Sidebar routes={routes} display='none' {...rest} />
         <Box
           float='right'

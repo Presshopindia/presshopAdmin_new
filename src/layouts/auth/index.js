@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useMemo, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
 
@@ -23,7 +23,7 @@ export default function Auth() {
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
-            key={key}
+            key={prop?.id}
           />
         );
       }
@@ -42,10 +42,14 @@ export default function Auth() {
   return (
     <Box>
       <SidebarContext.Provider
-        value={{
-          toggleSidebar,
-          setToggleSidebar,
-        }}>
+          value={useMemo(
+            () => ({
+              toggleSidebar,
+              setToggleSidebar,
+            }),
+            [toggleSidebar, setToggleSidebar]
+          )}
+        >
         <Box
           bg={authBg}
           float='right'
