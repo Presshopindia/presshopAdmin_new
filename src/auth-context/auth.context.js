@@ -17,15 +17,20 @@ export const AuthProvider = ({ userData, children }) => {
       setAdmin(result?.data?.profileData)
     }
     catch (error) {
-      // console.log(error);
+      console.log(error)
     }
   }
   useEffect(() => {
     getProfile()
   }, [changeProfile])
 
-
-  return <AuthContext.Provider value={{ user, setUser, setChangeProfile, admin }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+    value={useMemo(() => ({ user, setUser, setChangeProfile, admin }), [user, setUser, setChangeProfile, admin])}
+  >
+    {children}
+  </AuthContext.Provider>
+  )
 };
 
 AuthProvider.propTypes = {
