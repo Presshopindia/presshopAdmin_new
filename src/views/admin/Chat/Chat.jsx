@@ -92,6 +92,7 @@ import { useMsgContext } from "contexts/PendindMsgContext";
 import { CheckIcon } from "@chakra-ui/icons";
 import { Post } from "api/admin.services";
 import { IoCheckmark, IoCheckmarkDone } from "react-icons/io5";
+import { useId } from "react";
 
 export default function Chat() {
   let { pendingChats, setPendingChats, setUpdateChatNotification } =
@@ -135,6 +136,7 @@ export default function Chat() {
   const [currentPageHopper, setCurrentPageHopper] = useState(1);
   const [roomInfo, setRoomInfo] = useState(null);
   const [hopperDetails, setHopperDetails] = useState(null);
+  const randomString = useId();
 
   const {
     isOpen: isOpen1,
@@ -225,16 +227,6 @@ export default function Chat() {
         return data.slice(startIndex, startIndex + limit);
       });
 
-      // let firstIndex = search
-      //     ? filteredPublicationsChat.filter((chat) =>
-      //         chat.senderName.toLowerCase().includes(search.toLowerCase())
-      //       )
-      //     : filteredPublicationsChat;
-      //   setTotalPagesForPub(firstIndex?.length ? firstIndex.length / limit : 0);
-      //   const startIndex = (pubPage - 1) * limit;
-      //   firstIndex = firstIndex.slice(startIndex, startIndex + limit);
-      // setRoomInfo(firstIndex[0]);
-
       setPendingChats(
         calculatePendingCount(filteredChat, filteredPublicationsChat)
       );
@@ -257,7 +249,6 @@ export default function Chat() {
 
   function generateUniqueFileName() {
     const timestamp = new Date().getTime();
-    const randomString = Math.random().toString(36).substring(2, 8);
     return `${timestamp}_${randomString}.mp3`;
   }
 

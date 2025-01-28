@@ -183,8 +183,7 @@ export default function AvatarsN() {
         overflowX={{ sm: "scroll", lg: "hidden" }}
       >
         <div className="avtrs_btm_in">
-          {Avatar &&
-            Avatar.response.map((curr) => {
+          {Avatar?.response?.map((curr) => {
               return (
                 <div key={curr._id} className="select_avt_wrap">
                   {show && <Checkbox
@@ -192,7 +191,7 @@ export default function AvatarsN() {
                     colorScheme='brandScheme'
                     me='10px'
                     checked={checkedItems.includes(curr?._id)}
-                    id={Math.random()}
+                    id={curr?._id}
 
                     onChange={(event) => handleCheckboxChange(event, curr?._id)}
 

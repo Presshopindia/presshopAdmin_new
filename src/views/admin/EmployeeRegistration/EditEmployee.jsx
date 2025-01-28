@@ -1,28 +1,19 @@
 // Chakra imports
+import { React, useContext, useEffect, useState, useRef } from "react";
 import {
   Box,
-  Checkbox,
-  //  SimpleGrid
-} from "@chakra-ui/react";
-import { React, useContext, useEffect, useState } from "react";
-import {
   Flex,
   Text,
   Select,
-  useColorModeValue,
-  Icon,
   Button,
-  ButtonGroup,
-} from "@chakra-ui/react";
-import Card from "components/card/Card";
-import { Container } from "@chakra-ui/react";
-import {
+  Container,
   Input,
   InputLeftElement,
   InputRightElement,
   InputGroup,
+  useColorModeValue
 } from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
+import Card from "components/card/Card";
 import "react-phone-number-input/style.css";
 
 //New Imports//
@@ -30,7 +21,6 @@ import eye from "assets/img/icons/eye.svg";
 import CmpIcon from "assets/img/icons/company.svg";
 import HashTag from "assets/img/icons/Ahash.svg";
 import vat from "assets/img/icons/vat.svg";
-import AddPic from "assets/img/icons/AddPic.svg";
 import Globe from "assets/img/icons/globe.svg";
 import lock from "assets/img/icons/lock.svg";
 import offCup from "assets/img/icons/cup.svg";
@@ -38,9 +28,8 @@ import location from "assets/img/icons/location.svg";
 import hopper from "assets/img/icons/hopper.png";
 import Emailicon from "assets/img/icons/email.svg";
 import chair from "assets/img/icons/chair.svg";
-import { Post } from "api/admin.services";
+import { Get, Patch, Post } from "api/admin.services";
 import PhoneInput from "react-phone-number-input";
-import { Get } from "api/admin.services";
 import { toast } from "react-toastify";
 import Autocomplete from "react-google-autocomplete";
 import useric from "assets/img/icons/user.svg";
@@ -48,9 +37,7 @@ import bankic from "assets/img/icons/bank.svg";
 import sortcodeic from "assets/img/icons/sortcode.svg";
 import accountic from "assets/img/icons/account.svg";
 import dataContext from "../ContextFolder/Createcontext";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import { useRef } from "react";
-import { Patch } from "api/admin.services";
+import { GoogleMap } from "@react-google-maps/api";
 import Loader from "components/Loader";
 import { useAuth } from "auth-context/auth.context";
 import { getFilenameFromUrl } from "utils/commonFunction";
@@ -58,33 +45,22 @@ import { getFilenameFromUrl } from "utils/commonFunction";
 export default function EmployeeRegistration() {
   const [loading, setLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [designation, setDesigation] = useState([]);
+  const [designation, setDesignation] = useState([]);
   const [department, setDepartment] = useState([]);
-  const [imageSelected, setImageSelected] = useState(false);
   const textColor = useColorModeValue("#000", "white");
   const [passwordShown, setPasswordShown] = useState(false);
   const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
-  const history = useHistory();
 
-  const { profile, setProfile } = useContext(dataContext);
-
-  //compant detail
-  const [companyDetails, setCompDetails] = useState({
-    companyaddress: "",
-    companynumber: "",
-    vatnumber: "",
-  });
+  const { profile } = useContext(dataContext);
 
   //  both are for country code start
-  const [value1, setValue1] = useState("");
   const [value, setValue] = useState("+44");
   const searchBoxRefStreet = useRef(null);
   const { setChangeProfile } = useAuth()
 
   //  both are for country code end
 
-  const [street_address, setstreet_address] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
   const [passwordsMatch, setPasswordsMatch] = useState(true);
@@ -292,15 +268,8 @@ export default function EmployeeRegistration() {
 
       return res.data.categories;
     } catch (err) {
-      // console.log("<---Have a erro ->", err);
     }
   };
-
-  const [editAbleProfile, setEditableProfile] = useState({
-    password: "",
-    cnf_password: "",
-    profile_image: "",
-  });
 
   const Edit = async (e) => {
     e.preventDefault();
@@ -319,25 +288,6 @@ export default function EmployeeRegistration() {
     // }
   };
 
-  const handleImage = (e) => {
-    const file = e.target.files[0];
-    setEditableProfile((previousValue) => {
-      return { ...previousValue, profile_image: file };
-    });
-
-    const objectUrl = URL.createObjectURL(e.target.files[0]);
-    setImagePreview(objectUrl);
-    setImageSelected(true);
-    if (
-      employeeDetail.profile_image &&
-      typeof employeeDetail.profile_image !== "string"
-    ) {
-      URL.revokeObjectURL(employeeDetail.profile_image);
-    }
-  };
-
-  //  get office name
-
   const getOfficeName = async () => {
     await Get(`admin/get/office/details`).then((res) => {
       setOfficeName(res.data.office_details);
@@ -346,7 +296,7 @@ export default function EmployeeRegistration() {
 
   useEffect(async () => {
     const designation = await getCategory("designation");
-    setDesigation(designation);
+    setDesignation(designation);
 
     const department = await getCategory("department");
     setDepartment(department);
@@ -354,36 +304,12 @@ export default function EmployeeRegistration() {
     getOfficeName();
   }, []);
 
-  function handleCheckboxChange(event) {
-    setIsChecked(event.target.checked);
-    // setOfficeDetail({
-    //     office_name: "",
-    //     phone: "",
-    //     country_code: "",
-    //     email: "",
-    //     website: "",
-    //     address: {
-    //         pincode: "",
-    //         country: "",
-    //         city: "",
-    //         complete_address: "",
-    //         location: {
-    //             coordinates: [],
-    //         },
-    //     },
-    // });
-  }
-
   const handleStreetChange = (e) => {
-    setstreet_address(e.target.value);
+    setStreetAddress(e.target.value);
   };
 
   const handlePopupOpen = () => {
     setShowPopup(true);
-  };
-
-  const handlePopupClose = () => {
-    setShowPopup(false);
   };
 
   const onMapLoadStreet = (map) => {
@@ -397,7 +323,7 @@ export default function EmployeeRegistration() {
       }
       const loc = places[0].formatted_address;
 
-      setstreet_address(loc);
+      setStreetAddress(loc);
 
       setOfficeDetail((prev) => ({
         ...prev,
@@ -412,63 +338,12 @@ export default function EmployeeRegistration() {
     });
   };
 
-  // const handleAddress = (place) => {
-  //   let city = "";
-  //   const addressComponents = place.address_components;
-  //   if (addressComponents) {
-  //     const cityComponent = addressComponents?.find(
-  //       (component) =>
-  //         component.types.includes("locality") ||
-  //         component.types.includes("administrative_area_level_1") ||
-  //         component.types.includes("administrative_area_level_2")
-  //     );
-
-  //     if (cityComponent) {
-  //       city = cityComponent.long_name;
-  //     }
-  //   }
-
-  //   if (!city && place.formatted_address) {
-  //     city = place.formatted_address.split(",")[0];
-  //   }
-
-  //   const country =
-  //     place.address_components.find((component) =>
-  //       component.types.includes("country")
-  //     )?.long_name || "";
-
-  //   setOfficeDetail((previousValue) => ({
-  //     ...previousValue,
-  //     address: {
-  //       ...previousValue.address,
-  //       complete_address: place.formatted_address,
-  //       location: {
-  //         coordinates: [
-  //           place.geometry.location.lat(),
-  //           place.geometry.location.lng(),
-  //         ],
-  //       },
-  //       country: country,
-  //       city: city,
-  //     },
-  //   }));
-  // };
-
   const togglePasswordVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
   };
 
   const toggleConfirmPasswordVisiblity = () => {
     setConfirmPasswordShown(confirmPasswordShown ? false : true);
-  };
-
-  //start edit development
-
-  const handleCmpnyDetailChange = (e) => {
-    setCompDetails((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
   };
 
   return (
@@ -603,10 +478,10 @@ export default function EmployeeRegistration() {
                       <input
                         placeholder="Enter Postcode"
                         disabled={!isChecked}
-                        name="street_address"
+                        name="streetAddress"
                         className="tsk_loc_inp form-control"
                         type="textarea"
-                        value={street_address}
+                        value={streetAddress}
                         onChange={handleStreetChange}
                         onFocus={handlePopupOpen}
                         onClick={handlePopupOpen}
@@ -617,18 +492,6 @@ export default function EmployeeRegistration() {
                           <GoogleMap onLoad={onMapLoadStreet}></GoogleMap>
                         </div>
                       )}
-                      {/* <Autocomplete
-                        pattern="^(?!\s*$).+$"
-                        title="Please enter a value without white spaces at the start"
-                        className="addr_custom_inp pdng_s"
-                        disabled={!isChecked}
-                        Value={officeDetail?.address?.complete_address}
-                        apiKey={"AIzaSyApYpgGb1pLhudPj9EBdMxd8tArd0nGp5M"}
-                        onPlaceSelected={(place) => {
-                          handleAddress(place);
-                        }}
-                        required
-                      /> */}
                     </InputGroup>
                     <InputGroup flex={0.3}>
                       <InputLeftElement pointerEvents="none">
@@ -970,7 +833,6 @@ export default function EmployeeRegistration() {
                         {
                           <img
                             src={
-                              imagePreview ||
                               `https://uat-presshope.s3.eu-west-2.amazonaws.com/public/adminImages/${userInfo?.profile_image}`
                             }
                             className="uploaded_img nimg"
@@ -1011,7 +873,6 @@ export default function EmployeeRegistration() {
                         // pattern="^(?!\s)[\s\S]*$"
                         title="Please enter a value without white spaces at the start"
                         className="addr_custom_inp"
-                        apiKey={"AIzaSyApYpgGb1pLhudPj9EBdMxd8tArd0nGp5M"}
                         disabled={
                           profile?.subadmin_rights?.viewRightOnly &&
                           !profile?.subadmin_rights?.onboardEmployess
@@ -1019,7 +880,6 @@ export default function EmployeeRegistration() {
                         onPlaceSelected={(place) => {
                           handleEmployeeAddress(place);
                         }}
-                      // required
                       />
                     </InputGroup>
                     <InputGroup flex={0.3}>

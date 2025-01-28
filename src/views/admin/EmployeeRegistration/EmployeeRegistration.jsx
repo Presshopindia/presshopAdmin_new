@@ -48,30 +48,23 @@ import bankic from "assets/img/icons/bank.svg";
 import sortcodeic from "assets/img/icons/sortcode.svg";
 import accountic from "assets/img/icons/account.svg";
 import dataContext from "../ContextFolder/Createcontext";
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap } from '@react-google-maps/api';
 import { useRef } from "react";
 import flaguk from "assets/img/uk-flag.png"
 import Loader from "components/Loader";
 import { useAuth } from "auth-context/auth.context";
+import { useId } from "react";
 
 
 export default function EmployeeRegistration() {
-  const libraries = ['places'];
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyApYpgGb1pLhudPj9EBdMxd8tArd0nGp5M', // Replace with your API key
-    libraries,
-  });
-
   const [isChecked, setIsChecked] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [designation, setDesigation] = useState([]);
   const [department, setDepartment] = useState([]);
   const [imageSelected, setImageSelected] = useState(false);
   const textColor = useColorModeValue("#000", "white");
-  const [passwordShown, setPasswordShown] = useState(false);
-  const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
-  const history = useHistory();
   const [loading, setLoading] = useState(false);
+  const randomPassword = useId();
 
   const { profile } = useContext(dataContext)
   //  both are for country code start
@@ -175,7 +168,6 @@ export default function EmployeeRegistration() {
 
   const AddNewEmployees = async (e) => {
     e.preventDefault();
-    const randomPassword = Math.floor(Math.random() * 90000000) + 10000000;
     const formData = new FormData();
     formData.append("name", employeeDetail.name);
     formData.append("designation_id", employeeDetail.designation_id);
@@ -187,9 +179,7 @@ export default function EmployeeRegistration() {
     formData.append("password", randomPassword);
     formData.append("confirmPassword", randomPassword);
     formData.append("profile_image", employeeDetail.profile_image);
-    // formData.append("bank_details",JSON.stringify(employeeDetail.bank_details));
     formData.append("subadmin_rights", JSON.stringify(employeeDetail.subadmin_rights));
-    // formData.append("employee_address",JSON.stringify(employeeDetail.employee_address));
     formData.append("office_details", JSON.stringify({
       address: "167-169 Great Portland Street 5th Floor, London W1W 5PF",
       company_name: "Presshop Company",
