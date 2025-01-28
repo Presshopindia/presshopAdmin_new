@@ -118,8 +118,7 @@ export default function HeaderLinks(props) {
               fontSize='10px'
               lineHeight='10px'
             >
-              {/* {moment(Date.now()).format('h:mm:ss A')} */}
-              <DigitalClock shortMonth={true} />
+              <DigitalClock/>
             </Text>
           </Flex>
           <div className="ntf_edit_ic_wrap">

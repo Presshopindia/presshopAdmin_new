@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const DigitalClock = ({shortMonth}) => {
+const DigitalClock = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -25,7 +25,6 @@ const DigitalClock = ({shortMonth}) => {
   const formatDate = (date) => {
     const options = {
       day: "numeric",
-      // month: shortMonth ? "short" : "long",
       month:"short",
       year: "numeric"
     };

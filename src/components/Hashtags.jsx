@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import CreatableSelect from "react-select/creatable";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated"; // for animations in select
 import { Get } from "api/admin.services";
@@ -25,27 +24,6 @@ const TagSelect = ({ curr, index, setPublishedData }) => {
       console.error("Error fetching tags", error);
     }
   };
-
-  // Handle selecting tags
-  // const handleSelectChange = (selectedOptions) => {
-  //   // Update curr.tagData with selected tags (name and id)
-  //   console.log("selectedoption", selectedOptions);
-  //   const selectedTags = selectedOptions.map((option) => ({
-  //     name: option.value, // Keep tag name
-  //     id: option.id, // Keep tag id
-  //   }));
-
-  //   // Update curr.tagData with selected tags
-  //   curr.tagData = selectedTags;
-  //   curr.tag_ids = selectedTags.map((ele) => ele.id);
-
-  //   // Update parent state
-  //   setPublishedData((pre) => {
-  //     const updatedData = [...pre];
-  //     updatedData[index] = curr;
-  //     return updatedData;
-  //   });
-  // };
 
   const handleSelectChange = (selectedOptions) => {
     if (!selectedOptions) return;
@@ -78,7 +56,7 @@ const TagSelect = ({ curr, index, setPublishedData }) => {
       )
     ) {
       const tags = inputValue.split(/[\s,]+/);
-      tags.map((tag) => {
+      tags?.forEach((tag) => {
         const newTag = {
           label: `#${tag}`,
           value: tag.toLowerCase().replace(/\W/g, ""),

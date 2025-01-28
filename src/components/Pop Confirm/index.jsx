@@ -49,9 +49,9 @@ function PopupConfirm({
               <span className="dlte" style={{ cursor: "pointer" }} onClick={onOpen}>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_5605_71719)">
-                    <path d="M1.09375 2.94531H10.8715" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M2.31641 2.94531V9.66753C2.31641 10.6801 3.13722 11.5009 4.14974 11.5009H7.81641C8.82894 11.5009 9.64974 10.6801 9.64974 9.66753V2.94531" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M4.15039 1.72222C4.15039 1.04721 4.6976 0.5 5.37261 0.5H6.59484C7.26987 0.5 7.81706 1.04721 7.81706 1.72222V2.94445H4.15039V1.72222Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M1.09375 2.94531H10.8715" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M2.31641 2.94531V9.66753C2.31641 10.6801 3.13722 11.5009 4.14974 11.5009H7.81641C8.82894 11.5009 9.64974 10.6801 9.64974 9.66753V2.94531" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M4.15039 1.72222C4.15039 1.04721 4.6976 0.5 5.37261 0.5H6.59484C7.26987 0.5 7.81706 1.04721 7.81706 1.72222V2.94445H4.15039V1.72222Z" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
                   </g>
                   <defs>
                     <clipPath id="clip0_5605_71719">
