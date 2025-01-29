@@ -13,14 +13,11 @@ import {
   ModalContent,
   ModalBody,
   useDisclosure,
-  Select,
-  Textarea,
   ModalHeader,
   ModalCloseButton,
   ModalFooter,
   Flex,
   Text,
-  useColorModeValue,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -29,24 +26,17 @@ import {
   PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
   ButtonGroup,
 } from "@chakra-ui/react";
-import { React, useMemo } from "react";
-import AudioRecorder from "../../../components/audiorecorder/audiorec.js";
+import { useMemo, useEffect, useRef, useState, useId } from "react";
 
 import Card from "components/card/Card";
-import search from "assets/img/icons/search.svg";
-import addchatic from "assets/img/icons/add-chat.svg";
-import filtersic from "assets/img/icons/filters.svg";
 import profileimg from "assets/img/icons/profile.svg";
-import clicn from "assets/img/icons/cl.svg";
 import plusicn from "assets/img/icons/plus.svg";
-import vdicn from "assets/img/icons/vd.svg";
 import mcicn from "assets/img/icons/mc.svg";
 import arwhiteicn from "assets/img/icons/arrow-white.svg";
 import dltIcn from "assets/img/dlt-icon.svg";
-import { auth, db } from "config/firebase";
+import { db, storage } from "config/firebase";
 import ReactPaginate from "react-paginate";
 
 import {
@@ -57,57 +47,37 @@ import {
   doc,
   setDoc,
   updateDoc,
-} from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
-// import { getFirestore } from 'firebase/firestore';
-import LazyLoad from "react-lazyload";
-// import { getDatabase,  set, onValue } from 'firebase/database';
-import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
-import { toast } from "react-toastify";
-import { storage } from "config/firebase";
-import {
   query,
   orderBy,
   onSnapshot,
-  limit,
-  where,
   getDocs,
   writeBatch,
   getDoc,
 } from "firebase/firestore";
-import moment, { duration } from "moment";
-import { Get } from "api/admin.services";
-import { BsArrowLeft, BsPause, BsPlay, BsStop } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+import LazyLoad from "react-lazyload";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { toast } from "react-toastify";
+import moment from "moment";
+import { Get, Post } from "api/admin.services";
+import { BsArrowLeft, BsPause, BsPlay } from "react-icons/bs";
 import csvic from "assets/img/icons/csv.svg";
-import vuImg from "assets/img/view-img.jpg";
-import upldedimg from "assets/img/contentimages/content1.svg";
 import { ReactMic } from "react-mic";
-import { Tooltip } from "@chakra-ui/react";
 import "./Chat.css";
-import dataContext from "../ContextFolder/Createcontext";
 
-// importing sidebar context to send pending msg data to sidebar
 import { useMsgContext } from "contexts/PendindMsgContext";
-import { CheckIcon } from "@chakra-ui/icons";
-import { Post } from "api/admin.services";
 import { IoCheckmark, IoCheckmarkDone } from "react-icons/io5";
-import { useId } from "react";
 
 export default function Chat() {
-  let { pendingChats, setPendingChats, setUpdateChatNotification } =
-    useMsgContext();
-
+  let { setPendingChats, setUpdateChatNotification } = useMsgContext();
   const [bigImage, setBigImage] = useState();
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(null);
-  const { onOpen, onClose } = useDisclosure();
+  const { onClose } = useDisclosure();
   const [file, setFile] = useState("");
   const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState([]);
-  const [profile, setprofile] = useState();
+  const [profile, setProfile] = useState();
   const [publicationChats, setPublicationChats] = useState([]);
-  // console.log("🚀 ~ file: Chat.jsx:75 ~ Chat ~ publicationChats:", publicationChats);
 
   const [roomList, setRoomList] = useState([]);
   const [roomDetails, setRoomDetails] = useState({});
@@ -117,8 +87,7 @@ export default function Chat() {
   const [type, setType] = useState("text");
   const [hide, setHide] = useState(false);
   const [activeRoomId, setActiveRoomId] = useState(null);
-  const [activeRoomId1, setActiveRoomId1] = useState(null);
-  const [fireStoreChats, setFireChats] = useState([]);
+  const [fireStoreChats, setFireStoreChats] = useState([]);
   const initialFocusRef = useRef();
   const csvUrl = localStorage.getItem("csvUrl");
   const messagesEndRef = useRef(null);
@@ -128,7 +97,6 @@ export default function Chat() {
   const [userStatusObj, setUserStatusObj] = useState({});
 
   const [hoopersChatList, setHoopersChatList] = useState([]);
-  // console.log("🚀 ~ Chat ~ hoopersChatList:", hoopersChatList)
   const [search, setSearch] = useState("");
   const [totalPagesForPub, setTotalPagesForPub] = useState(10);
   const [totalPagesForHopper, setTotalPagesForHopper] = useState(10);
@@ -149,13 +117,11 @@ export default function Chat() {
     onClose: onClosePopover1,
   } = useDisclosure();
 
-  const statusCollectionName = "OnlineOffline";
-
   // get profile
   const GetProfile = async () => {
     try {
       await Get(`admin/getProfile`).then((res) => {
-        setprofile(res?.data?.profileData);
+        setProfile(res?.data?.profileData);
       });
     } catch (error) {
       // console.log(error);
@@ -277,35 +243,7 @@ export default function Chat() {
     }
   };
 
-  // const onStopRecording = async (recordedBlob) => {
-  //   setIsRecording(false);
-
-  //   try {
-  //     const storageRef = ref(storage, `media/${generateUniqueFileName()}`); // Generate a unique file name
-  //     const snapshot = await uploadBytes(storageRef, recordedBlob.blob);
-  //     // Get the download URL for the uploaded audio
-  //     const audioURL = await getDownloadURL(snapshot.ref);
-  //     setAudioURL(audioURL);
-  //   } catch (error) {
-  //     console.error("Error uploading audio:", error);
-  //   }
-  // };
   const [typingTimeout, setTypingTimeout] = useState(null);
-  // const updateTypingStatus = async (isTyping) => {
-  //   console.log("user is typing", roomInfo?.roomId);
-  //   console.log("user is typing isTyping ---->", isTyping);
-  //   const docRef = doc(db, "Chat", roomInfo?.roomId);
-  //   console.log("Updating typing status for document:", docRef.path);
-  //   try {
-  //     await setDoc(
-  //       docRef,
-  //       { isTyping }, // Update only the isTyping field
-  //       { merge: true } // Merge with existing fields
-  //     );
-  //   } catch (error) {
-  //     console.error("Error updating typing status:", error);
-  //   }
-  // };
   const updateTypingStatus = async (isTyping) => {
     console.log("User is typing in room:", roomInfo);
     console.log("User typing status:", isTyping);
@@ -694,7 +632,7 @@ export default function Chat() {
         data: doc.data(),
       }));
       // console.log("getchats", chats);
-      setFireChats(chats);
+      setFireStoreChats(chats);
       // return chats;
     } catch (error) {
       console.error("Error getting chats:", error);
@@ -867,7 +805,7 @@ export default function Chat() {
 
   //update chatlist
   const updateChatList = (roomId) => {
-    setFireChats((prev) => {
+    setFireStoreChats((prev) => {
       return prev.map((obj) => {
         if (obj?.data?.roomId === roomId) {
           return { ...obj, data: { ...obj.data, readStatus: "seen" } };

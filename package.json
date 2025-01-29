@@ -47,6 +47,7 @@
     "framer-motion": "^4.1.17",
     "framework7-react": "^8.0.5",
     "jspdf": "^2.5.1",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "prop-types": "^15.8.1",
     "react": "17.0.2",

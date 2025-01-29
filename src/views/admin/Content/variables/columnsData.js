@@ -1,75 +1,14 @@
-export const columnsDataDevelopment = [
-  {
-    Header: "NAME",
-    accessor: "name",
-  },
-  {
-    Header: "TECH",
-    accessor: "tech",
-  },
-  {
-    Header: "DATE",
-    accessor: "date",
-  },
-  {
-    Header: "PROGRESS",
-    accessor: "progress",
-  },
+const createColumnData = (additionalColumns) => [
+  { Header: "NAME", accessor: "name" },
+  { Header: "PROGRESS", accessor: "progress" },
+  { Header: "DATE", accessor: "date" },
+  ...additionalColumns
 ];
 
-export const columnsDataCheck = [
-  {
-    Header: "NAME",
-    accessor: "name",
-  },
-  {
-    Header: "PROGRESS",
-    accessor: "progress",
-  },
-  {
-    Header: "QUANTITY",
-    accessor: "quantity",
-  },
-  {
-    Header: "DATE",
-    accessor: "date",
-  },
-];
+export const columnsDataDevelopment = createColumnData([{ Header: "TECH", accessor: "tech" }]);
 
-export const columnsDataColumns = [
-  {
-    Header: "NAME",
-    accessor: "name",
-  },
-  {
-    Header: "PROGRESS",
-    accessor: "progress",
-  },
-  {
-    Header: "QUANTITY",
-    accessor: "quantity",
-  },
-  {
-    Header: "DATE",
-    accessor: "date",
-  },
-];
+export const columnsDataCheck = createColumnData([{ Header: "QUANTITY", accessor: "quantity" }]);
 
-export const columnsDataComplex = [
-  {
-    Header: "NAME",
-    accessor: "name",
-  },
-  {
-    Header: "STATUS",
-    accessor: "status",
-  },
-  {
-    Header: "DATE",
-    accessor: "date",
-  },
-  {
-    Header: "PROGRESS",
-    accessor: "progress",
-  },
-];
+export const columnsDataColumns = createColumnData([{ Header: "QUANTITY", accessor: "quantity" }]);
+
+export const columnsDataComplex = createColumnData([{ Header: "STATUS", accessor: "status" }]);
