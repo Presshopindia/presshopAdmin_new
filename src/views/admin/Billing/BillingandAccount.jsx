@@ -6,20 +6,14 @@ import DevelopmentTable from "./components/DevelopmentTable";
 import CheckTable from "./components/CheckTable";
 import ColumnsTable from "./components/ColumnsTable";
 import ComplexTable from "./components/ComplexTable";
-import {
-  columnsDataDevelopment,
-  columnsDataCheck,
-  columnsDataColumns,
-  columnsDataComplex,
-} from "views/admin/Billing/variables/columnsData";
 import tableDataDevelopment from "views/admin/Billing/variables/tableDataDevelopment.json";
 import tableDataCheck from "views/admin/Billing/variables/tableDataCheck.json";
 import tableDataColumns from "views/admin/Billing/variables/tableDataColumns.json";
 import tableDataComplex from "views/admin/Billing/variables/tableDataComplex.json";
 import React from "react";
+import { columnsDataDevelopment, columnsDataCheck, columnsDataColumns, columnsDataComplex } from "constants";
 
 export default function BillingandAccount() {
-  // Chakra Color Mode
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid

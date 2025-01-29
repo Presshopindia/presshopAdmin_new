@@ -28,8 +28,8 @@ import {
   PopoverCloseButton,
   ButtonGroup,
 } from "@chakra-ui/react";
-import { useMemo, useEffect, useRef, useState, useId } from "react";
-
+import { useEffect, useRef, useState } from "react";
+import _ from 'lodash';
 import Card from "components/card/Card";
 import profileimg from "assets/img/icons/profile.svg";
 import plusicn from "assets/img/icons/plus.svg";
@@ -79,9 +79,7 @@ export default function Chat() {
   const [profile, setProfile] = useState();
   const [publicationChats, setPublicationChats] = useState([]);
 
-  const [roomList, setRoomList] = useState([]);
   const [roomDetails, setRoomDetails] = useState({});
-  // console.log("🚀 ~ Chat ~ roomDetails:", roomDetails)
   const [previewUrl, setPreviewUrl] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [type, setType] = useState("text");
@@ -103,8 +101,7 @@ export default function Chat() {
   const [currentPagePub, setCurrentPagePub] = useState(1);
   const [currentPageHopper, setCurrentPageHopper] = useState(1);
   const [roomInfo, setRoomInfo] = useState(null);
-  const [hopperDetails, setHopperDetails] = useState(null);
-  const randomString = useId();
+  const randomString = _.uniqueId('time') + _.random(1000, 9999);
 
   const {
     isOpen: isOpen1,
@@ -124,34 +121,7 @@ export default function Chat() {
         setProfile(res?.data?.profileData);
       });
     } catch (error) {
-      // console.log(error);
     }
-  };
-
-  const HopperControls = async () => {
-    try {
-      await Get(`admin/getHopperList`).then((res) => {
-        const data = res?.data?.response?.hopperList?.map((el) => {
-          return {
-            first_name: el.first_name,
-            last_name: el.last_name,
-            full_name: el.first_name + el.last_name,
-            user_name: el.user_name,
-          };
-        });
-        setHopperDetails(data);
-      });
-    } catch (error) {
-      // console.log(error)
-    }
-  };
-
-  const GetRoomIds = async () => {
-    try {
-      await Get(`admin/roomList?room_type=MediahousetoAdmin`).then((res) => {
-        // setPublicationChats(res?.data?.data);
-      });
-    } catch (error) {}
   };
 
   const getChatsListing = (pubPage = 1, HopperPage = 1, limit = 6) => {
@@ -201,14 +171,6 @@ export default function Chat() {
     return unsubscribe;
   };
 
-  const GetRoomIds1 = async () => {
-    try {
-      await Get(`admin/roomList?room_type=HoppertoAdmin`).then((res) => {
-        setRoomList(res?.data?.data);
-      });
-    } catch (error) {}
-  };
-
   // handle audio record
   const [isRecording, setIsRecording] = useState(false);
   const [audioURL, setAudioURL] = useState("");
@@ -228,8 +190,6 @@ export default function Chat() {
       toast.error("Record another audio");
       return;
     }
-    console.log("recording blob ----->  ------>", recordedBlob.blob);
-
     try {
       const storageRef = ref(storage, `media/${generateUniqueFileName()}`);
       const snapshot = await uploadBytes(storageRef, recordedBlob.blob, {
@@ -296,10 +256,6 @@ export default function Chat() {
   const handleFileChange = (event) => {
     event.preventDefault();
     const selectedFile = event.target.files[0];
-    // console.log(
-    //   "🚀 ~ file: Chat.jsx:161 ~ handleFileChange ~ selectedFile:",
-    //   selectedFile
-    // );
     if (selectedFile) {
       setOpenModal(true);
       const reader = new FileReader();
@@ -369,7 +325,6 @@ export default function Chat() {
         setFile(null);
       }
     } else if (msg?.trim() !== "") {
-      // console.log("send message");
       sendMessage(msg, "text");
       setOpenModal(false);
     } else if (audioURL) {
@@ -383,7 +338,6 @@ export default function Chat() {
   };
 
   const sendMessage = async (message, messageType, thumbnailURL = "") => {
-    // const { uid, email } = auth.currentUser || {};
     const firestore = getFirestore();
 
     const messageRef = collection(
@@ -424,15 +378,12 @@ export default function Chat() {
       isAudioSelected: false,
     };
 
-    // console.log("add doc", messageData);
     try {
       await addDoc(messageRef, messageData);
       setLastMessage(message, messageType, thumbnailURL, roomDetails?.room_id);
       setMsg("");
       setFile(null);
       GetMessages(roomDetails?.room_id);
-      // sender_id?._id
-      // await SendNotification(roomDetails?.senderId, messageType, `👋🏼 Hi ${roomDetails?.sender_id?.first_name} ${roomDetails?.sender_id?.last_name} (${roomDetails?.sender_id?.user_name}), you've got a new chat message from PRESSHOP🐰 `)
       await SendNotification(
         roomDetails?.senderId,
         messageType,
@@ -446,7 +397,6 @@ export default function Chat() {
   const setLastMessage = async (
     message,
     messageType,
-    thumbnailURL = "",
     roomId
   ) => {
     const firestore = getFirestore();
@@ -469,10 +419,8 @@ export default function Chat() {
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
         await updateDoc(docRef, updatedFields);
-        // console.log("Document successfully updated");
       } else {
         await setDoc(docRef, newDoc);
-        // console.log("Document successfully created");
       }
     } catch (error) {
       console.error("Error updating document: ", error);
@@ -482,7 +430,6 @@ export default function Chat() {
 
   const GetMessages = (roomId) => {
     if (!roomId) {
-      // console.log("room id not found");
       return;
     }
     const messageRef = collection(getFirestore(), "Chat", roomId, "Messages");
@@ -492,13 +439,8 @@ export default function Chat() {
         id: doc.id,
         ...doc.data(),
       }));
-      // console.log(
-      //   "🚀 ~ file: Chat.jsx:294 ~ newMessages ~ newMessages:",
-      //   newMessages
-      // );
       setUpdateChatNotification((prev) => !prev);
       setMessages((prevMessages) => {
-        // Combine the previous messages with the new messages
         return [...prevMessages, ...newMessages];
       });
     });
@@ -518,15 +460,11 @@ export default function Chat() {
     try {
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
-        // console.log("Document already exists, skipping creation");
         return; // Document already exists, no need to create
       }
 
-      // await addDoc(docRef, initialData);
-      // console.log("Document created successfully");
       await setDoc(docRef, initialData);
-      // console.log("Document written with ID: ", documentId);
-      return documentId; // Return the custom document ID
+      return documentId;
     } catch (error) {
       console.error("Error creating document: ", error);
       throw error;
@@ -565,9 +503,7 @@ export default function Chat() {
 
     try {
       await updateDoc(docRef, data);
-      // console.log("Document successfully updated");
     } catch (error) {
-      // console.error("Error updating document: ", error);
       throw error;
     }
   };
@@ -577,13 +513,9 @@ export default function Chat() {
     const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
-        // console.log("Document data:", data);
         setIsUserOnline(data.isOnline);
         setUserStatusObj(data);
-        // callback(data);
       } else {
-        // console.log("Document does not exist");
-        // callback(null);
       }
     });
 
@@ -599,15 +531,10 @@ export default function Chat() {
       // Get the current data of the document
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
-        // Update only the isOnline field, keeping the rest unchanged
-        const currentData = docSnapshot.data();
         await updateDoc(docRef, {
           isOnline: false,
           last_seen: new Date().toLocaleTimeString(),
         });
-        // console.log("Document successfully updated");
-      } else {
-        // console.log("Document does not exist");
       }
     } catch (error) {
       console.error("Error updating document: ", error);
@@ -631,7 +558,6 @@ export default function Chat() {
         id: doc.id,
         data: doc.data(),
       }));
-      // console.log("getchats", chats);
       setFireStoreChats(chats);
       // return chats;
     } catch (error) {
@@ -641,11 +567,8 @@ export default function Chat() {
   };
 
   useEffect(() => {
-    GetRoomIds();
-    GetRoomIds1();
     GetProfile();
     getChat();
-    HopperControls();
   }, []);
 
   useEffect(() => {
@@ -674,7 +597,7 @@ export default function Chat() {
         "Messages",
         messageId
       );
-      const res = await deleteDoc(messageRef);
+      await deleteDoc(messageRef);
       setMessages((prevMessages) =>
         prevMessages.filter((message) => message.id !== messageId)
       );
@@ -694,11 +617,9 @@ export default function Chat() {
         title: notificationsTitle,
         body: notificationsMessage,
       };
-      // console.log("🚀 ~ SendNotification ~ obj:", obj);
 
       await Post("admin/sendNotification", obj);
     } catch (err) {
-      // console.log(err);
     }
   };
 
@@ -711,11 +632,9 @@ export default function Chat() {
       if (data?.receiverId === profile?._id) {
         batch.update(doc.ref, { readStatus: status });
       }
-      // batch.update(doc.ref, { readStatus: status });
     });
     try {
       await batch.commit();
-      // console.log("Read status updated successfully.");
       setUpdateChatNotification((prev) => !prev);
       GetMessages(roomId);
     } catch (error) {
@@ -732,39 +651,15 @@ export default function Chat() {
       if (data?.receiverId === profile?._id) {
         batch.update(doc.ref, { readStatus: status });
       }
-      // batch.update(doc.ref, { readStatus: status });
     });
     try {
       await batch.commit();
-      // console.log("Read status updated successfully.");
       setUpdateChatNotification((prev) => !prev);
       GetMessages(roomId);
     } catch (error) {
       console.error("Error updating read status:", error);
     }
   };
-
-  const fireStoreChatList = useMemo(() => {
-    return fireStoreChats.map((obj) => obj.data);
-  }, [fireStoreChats]);
-  // console.log("🚀 ~ fireStoreChatList ~ fireStoreChatList:", fireStoreChatList)
-
-  //extracting the number of unseen msgs
-  const unSeenMsg = useMemo(() => {
-    let pendingmsg = 0;
-    fireStoreChatList.forEach((obj) => {
-      if (obj.readStatus === "unread" && obj?.receiverId === profile?._id) {
-        pendingmsg++;
-      }
-    });
-    return pendingmsg;
-  }, [fireStoreChatList]);
-  // console.log("🚀 ~ file: Chat.jsx:430 ~ unSeenMsg ~ unSeenMsg:", unSeenMsg)
-
-  useEffect(() => {
-    // if (fireStoreChatList.length > 0) {
-    // }
-  }, [publicationChats, hoopersChatList]);
 
   function calculatePendingCount(arr1, arr2) {
     let pendingCount = 0;
@@ -788,8 +683,6 @@ export default function Chat() {
   //setting first chat at default chat in starting
   const [firstRander, setFirstRander] = useState(true);
 
-  // console.log({ roomInfo });
-
   useEffect(() => {
     if (firstRander === true) {
       if (publicationChats.length > 0) {
@@ -803,23 +696,8 @@ export default function Chat() {
     }
   }, [publicationChats]);
 
-  //update chatlist
-  const updateChatList = (roomId) => {
-    setFireStoreChats((prev) => {
-      return prev.map((obj) => {
-        if (obj?.data?.roomId === roomId) {
-          return { ...obj, data: { ...obj.data, readStatus: "seen" } };
-        } else {
-          return obj;
-        }
-      });
-    });
-  };
-
-  // console.log("hdhckhchsdcdxhhkzxbsj", messages);
 
   const scrollToBottom = () => {
-    // messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
   };
 
@@ -855,9 +733,6 @@ export default function Chat() {
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
         await updateDoc(docRef, updatedFields);
-        // console.log("Document successfully updated");
-      } else {
-        // console.log("Document not exist ");
       }
     } catch (error) {
       console.error("Error updating document: ", error);
@@ -874,28 +749,23 @@ export default function Chat() {
     setCurrentPageHopper(selectedPage.selected + 1);
   };
 
-  // console.log('hopperDetails ------>', hopperDetails)
-
   return (
     <>
       <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
         {localStorage.getItem("special_navigate") === true ||
         localStorage.getItem("special_navigate") === "true" ? (
           <div className="back_link">
-            <a
+            <button
+              style={{background:"none", border:"none"}}
               onClick={() => {
                 window.history.back();
               }}
             >
               <BsArrowLeft />
               <span>Back</span>
-            </a>
+            </button>
           </div>
         ) : null}
-        {/* {console.log(
-          "localStorage.getItemspecial_navigate",
-          localStorage.getItem("special_navigate")
-        )} */}
         <Flex mb="0px" gap="25px">
           <Card
             className="cms_left_card chat_wrap chatsListWrap"
@@ -921,14 +791,6 @@ export default function Chat() {
             <div className="chat_tabs_wrap">
               <Tabs
                 variant="unstyled"
-                // onChange={(e) => {
-                //   if (e === 0) {
-                //     GetRoomIds("MediahousetoAdmin")
-                //   }
-                //   else if (e === 1) {
-                //     GetRoomIds("HoppertoAdmin")
-                //   }
-                // }}
               >
                 <TabList>
                   {profile?.subadmin_rights?.allow_publication_chat && (

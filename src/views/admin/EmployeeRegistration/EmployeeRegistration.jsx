@@ -2,83 +2,59 @@
 import {
   Box,
   Checkbox,
-  //  SimpleGrid
-} from "@chakra-ui/react";
-import { React, useContext, useEffect, useState } from "react";
-import {
   Flex,
   Text,
   Select,
   useColorModeValue,
-  Icon,
   Button,
-  ButtonGroup,
-} from "@chakra-ui/react";
-import Card from "components/card/Card";
-import { Container } from "@chakra-ui/react";
-import {
-  Input,
+  Container,  Input,
   InputLeftElement,
-  InputRightElement,
   InputGroup,
 } from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
+import { useContext, useEffect, useState, useRef } from "react";
+import Card from "components/card/Card";
+
+import _ from "lodash";
 import "react-phone-number-input/style.css";
 
 //New Imports//
-import eye from "assets/img/icons/eye.svg";
 import CmpIcon from "assets/img/icons/company.svg";
 import HashTag from "assets/img/icons/Ahash.svg";
 import vat from "assets/img/icons/vat.svg";
 import AddPic from "assets/img/icons/AddPic.svg";
 import Globe from "assets/img/icons/globe.svg";
-import lock from "assets/img/icons/lock.svg";
 import offCup from "assets/img/icons/cup.svg";
 import location from "assets/img/icons/location.svg";
 import hopper from "assets/img/icons/hopper.png";
 import Emailicon from "assets/img/icons/email.svg";
 import chair from "assets/img/icons/chair.svg";
-import { Post } from "api/admin.services";
+import { Post, Get } from "api/admin.services";
 import PhoneInput from "react-phone-number-input";
-import { Get } from "api/admin.services";
 import { toast } from "react-toastify";
-import Autocomplete from "react-google-autocomplete";
-import useric from "assets/img/icons/user.svg";
-import bankic from "assets/img/icons/bank.svg";
-import sortcodeic from "assets/img/icons/sortcode.svg";
-import accountic from "assets/img/icons/account.svg";
 import dataContext from "../ContextFolder/Createcontext";
 import { GoogleMap } from '@react-google-maps/api';
-import { useRef } from "react";
 import flaguk from "assets/img/uk-flag.png"
 import Loader from "components/Loader";
 import { useAuth } from "auth-context/auth.context";
-import { useId } from "react";
-
 
 export default function EmployeeRegistration() {
   const [isChecked, setIsChecked] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
-  const [designation, setDesigation] = useState([]);
+  const [designation, setDesignation] = useState([]);
   const [department, setDepartment] = useState([]);
   const [imageSelected, setImageSelected] = useState(false);
   const textColor = useColorModeValue("#000", "white");
   const [loading, setLoading] = useState(false);
-  const randomPassword = useId();
+  const randomPassword = _.uniqueId('pass') + _.random(1000, 9999);
 
   const { profile } = useContext(dataContext)
   //  both are for country code start
   const [value1, setValue1] = useState("");
   const [value, setValue] = useState("");
   const searchBoxRefStreet = useRef(null);
-  const searchBoxRefStreet1 = useRef(null);
-
 
   //  both are for country code end
   const [showPopup, setShowPopup] = useState(false);
-  const [showPopup1, setShowPopup1] = useState(false);
-
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [officeName, setOfficeName] = useState([]);
   const [officeDetail, setOfficeDetail] = useState({
     office_name: "PRESSHOP London",
@@ -293,7 +269,7 @@ export default function EmployeeRegistration() {
 
   useEffect(async () => {
     const designation = await getCategory("designation");
-    setDesigation(designation);
+    setDesignation(designation);
 
     const department = await getCategory("department");
     setDepartment(department);
@@ -863,80 +839,6 @@ export default function EmployeeRegistration() {
                         </Select>
                       </div>
                     </Flex>
-                    {/* <Flex
-                      className="edit_inputs_wrap"
-                      justify="start"
-                      mb="25px"
-                      align="center"
-                    >
-                      <InputGroup
-                        flex={1}
-                        maxW="255px"
-                        className="chkra_password_grp"
-                      >
-                        <InputLeftElement pointerEvents="none">
-                          <img src={lock} alt="" />
-                        </InputLeftElement>
-                        <Input
-                          type={passwordShown === true ? "text" : "password"}
-                          placeholder="Choose password *"
-                          className="chkra_inpu_pass"
-                          name="password"
-                          autoComplete="new-password"
-                          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$"
-                          title="Password must contain at least 8 characters including one uppercase letter, one lowercase letter, one digit, and one special character"
-                          value={employeeDetail.password}
-                          isDisabled={profile?.subadmin_rights?.viewRightOnly && !profile?.subadmin_rights?.onboardEmployess}
-
-                          onChange={(e) => {
-                            setEmployeeDetail((pre) => {
-                              return { ...pre, password: e.target.value };
-                            });
-                          }}
-                          isRequired
-                        />
-                        <InputRightElement
-                          onClick={() => togglePasswordVisiblity()}
-                        >
-                          <img src={eye} alt="" />
-                        </InputRightElement>
-                      </InputGroup>
-                      <InputGroup
-                        flex={1}
-                        maxW="255px"
-                        className="chkra_password_grp"
-                      >
-                        <InputLeftElement pointerEvents="none">
-                          <img src={lock} alt="" />
-                        </InputLeftElement>
-                        <Input
-                          type={confirmPasswordShown ? "text" : "password"}
-                          placeholder="Choose password *"
-                          className="chkra_inpu_pass"
-                          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$"
-                          title="Password must contain at least 8 characters including one uppercase letter, one lowercase letter, one digit, and one special character"
-                          name="confirmPassword"
-                          isDisabled={profile?.subadmin_rights?.viewRightOnly && !profile?.subadmin_rights?.onboardEmployess}
-
-                          autoComplete="off"
-                          value={employeeDetail.confirmPassword}
-                          onChange={(e) => {
-                            setEmployeeDetail((pre) => {
-                              return { ...pre, confirmPassword: e.target.value };
-                            });
-                          }}
-                          isRequired
-                        />
-                        {!passwordsMatch && <div>Passwords do not match</div>}
-                        <InputRightElement>
-                          <img
-                            src={eye}
-                            alt=""
-                            onClick={toggleConfirmPasswordVisiblity}
-                          />
-                        </InputRightElement>
-                      </InputGroup>
-                    </Flex> */}
                   </div>
                   <div className="dtl_wrap_img">
                     <div className="Admin_img" align="center">
@@ -970,198 +872,6 @@ export default function EmployeeRegistration() {
                   </div>
                 </Flex>
               </div>
-
-              {/* <div className="brd_wrap pd_in pdng_tp new_emp_prsn_dtl">
-                <Flex justify="space-between" mb="25px" mt="25px" align="center">
-                  <Text
-                    color={textColor}
-                    fontSize="22px"
-                    fontWeight="700"
-                    lineHeight="100%"
-                    fontFamily={"AirbnbBold"}
-                  >
-                    New employee personal details
-                  </Text>
-                </Flex>
-                <div className="dtl_wrap">
-                  <Flex
-                    className="edit_inputs_wrap"
-                    px="0px"
-                    justify="space-between"
-                    mb="20px"
-                    align="center"
-                  >
-                    <InputGroup flex={1} className="inpu_n_cstm ">
-                      <InputLeftElement pointerEvents="none">
-                        <img className="location" src={location} alt="" />
-                      </InputLeftElement>
-                      <input
-                        placeholder="Enter residence address *"
-                        name="street_address"
-                        className="tsk_loc_inp form-control"
-                        type="textarea"
-                        value={employeeDetail?.employee_address?.complete_address}
-                        onChange={handleStreetChange1}
-                        onFocus={handlePopupOpen1}
-                        onClick={handlePopupOpen1}
-                        ref={searchBoxRefStreet1}
-                        required
-                      />
-                      {showPopup1 && (
-                        <div className="map-popup">
-                          <GoogleMap
-                            onLoad={onMapLoadStreet1}
-                          >
-                          </GoogleMap>
-                        </div>
-                      )}
-                    </InputGroup>
-                    <InputGroup flex={0.3}>
-                      <InputLeftElement pointerEvents="none">
-                        <img className="location" src={location} alt="" />
-                      </InputLeftElement>
-                      <Input
-                        placeholder="Post code*"
-                        className="disabled"
-                        pattern="^(?!\s)[\s\S]*$"
-                        title="Please enter a value without white spaces at the start"
-                        value={employeeDetail.employee_address.post_code}
-                        disabled={profile?.subadmin_rights?.viewRightOnly && !profile?.subadmin_rights?.onboardEmployess}
-
-                        onChange={(e) =>
-                          setEmployeeDetail((prevState) => ({
-                            ...prevState,
-                            employee_address: {
-                              ...prevState.employee_address,
-                              post_code: e.target.value,
-                            },
-                          }))
-                        }
-                        required
-                      />
-                    </InputGroup>
-
-                    <div className="select_wrapper" flex={0.4}>
-                      <img className="location-icon " src={location} alt="" />
-                      <Input
-                        placeholder="City"
-                        className="icon_left_side no_dsbl"
-                        value={employeeDetail.employee_address.city}
-                        disabled
-                      />
-                    </div>
-
-                    <div className="select_wrapper" flex={0.4}>
-                      <img className="location-icon " src={location} alt="" />
-                      <Input
-                        placeholder="Country"
-                        className="icon_left_side no_dsbl"
-                        value={employeeDetail.employee_address.country}
-                        disabled
-                      />
-                    </div>
-                  </Flex>
-                  <Flex
-                    className="edit_inputs_wrap"
-                    px="0px"
-                    justify="space-between"
-                    align="center"
-                  >
-                    <InputGroup flex={1}>
-                      <InputLeftElement>
-                        <img src={useric} alt="" />
-                      </InputLeftElement>
-                      <Input
-                        placeholder="Enter bank holder name *"
-                        value={employeeDetail.bank_details.account_holder_name}
-                        pattern="^(?! )[a-zA-Z\s'-]+$"
-                        title="Please enter a valid bank holder name"
-                        disabled={profile?.subadmin_rights?.viewRightOnly && !profile?.subadmin_rights?.onboardEmployess}
-
-                        onChange={(e) =>
-                          setEmployeeDetail((prevState) => ({
-                            ...prevState,
-                            bank_details: {
-                              ...prevState.bank_details,
-                              account_holder_name: e.target.value,
-                            },
-                          }))
-                        }
-                        required
-                      />
-                    </InputGroup>
-                    <InputGroup flex={1}>
-                      <InputLeftElement>
-                        <img src={bankic} alt="" />
-                      </InputLeftElement>
-                      <Input
-                        placeholder="Enter bank name *"
-                        pattern="^(?!^\s)(?!.*\s$)[a-zA-Z0-9\s]+$"
-                        title="Please enter a valid bank name without white spaces at the start or end"
-                        value={employeeDetail.bank_details.bank_name}
-                        disabled={profile?.subadmin_rights?.viewRightOnly && !profile?.subadmin_rights?.onboardEmployess}
-
-                        onChange={(e) =>
-                          setEmployeeDetail((prevState) => ({
-                            ...prevState,
-                            bank_details: {
-                              ...prevState.bank_details,
-                              bank_name: e.target.value,
-                            },
-                          }))
-                        }
-                        required
-                      />
-                    </InputGroup>
-                    <InputGroup flex={0.7}>
-                      <InputLeftElement>
-                        <img src={sortcodeic} alt="" />
-                      </InputLeftElement>
-                      <Input
-                        placeholder="Enter sort code *"
-                        pattern="^(?!^\s)(?!.*\s$)[a-zA-Z0-9\s]+$"
-                        title="please enter valid sort code"
-                        value={employeeDetail.bank_details.sort_code}
-                        disabled={profile?.subadmin_rights?.viewRightOnly && !profile?.subadmin_rights?.onboardEmployess}
-
-                        onChange={(e) =>
-                          setEmployeeDetail((prevState) => ({
-                            ...prevState,
-                            bank_details: {
-                              ...prevState.bank_details,
-                              sort_code: e.target.value,
-                            },
-                          }))
-                        }
-                        required
-                      />
-                    </InputGroup>
-                    <InputGroup flex={1}>
-                      <InputLeftElement>
-                        <img src={accountic} alt="" />
-                      </InputLeftElement>
-                      <Input
-                        placeholder="Enter account number *"
-                        pattern="^[a-zA-Z0-9]+$"
-                        title="Please enter a valid account number"
-                        value={employeeDetail.bank_details.account_number}
-                        disabled={profile?.subadmin_rights?.viewRightOnly && !profile?.subadmin_rights?.onboardEmployess}
-
-                        onChange={(e) =>
-                          setEmployeeDetail((prevState) => ({
-                            ...prevState,
-                            bank_details: {
-                              ...prevState.bank_details,
-                              account_number: e.target.value,
-                            },
-                          }))
-                        }
-                        required
-                      />
-                    </InputGroup>
-                  </Flex>
-                </div>
-              </div> */}
               {/*  New Employee Rights*/}
               {profile?.subadmin_rights?.assignNewEmployeeRights &&
                 <div className="pdng_tp">

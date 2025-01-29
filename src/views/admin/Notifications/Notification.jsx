@@ -8,7 +8,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   TabPanel,
@@ -16,46 +15,30 @@ import {
   Tab,
   TabList,
   Tabs,
-  Tooltip,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
+  Flex, Text
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import { Flex, Text } from "@chakra-ui/react";
 import Card from "components/card/Card";
 import searchic from "assets/img/icons/search.svg";
 import { MultiSelect } from "react-multi-select-component";
 import { useHistory } from "react-router-dom";
 import addchatic from "assets/img/icons/add-chat.svg";
-import filtersic from "assets/img/icons/filter.svg";
-import { Get } from "api/admin.services";
-import { Post } from "api/admin.services";
+import { Get, Post, Patch } from "api/admin.services";
 import { toast } from "react-toastify";
-import { async } from "@firebase/util";
-import moresent from "assets/img/icons/hopper.png";
 import moment from "moment";
 import Loader from "components/Loader";
-import { Patch } from "api/admin.services";
 import { useMsgContext } from "contexts/PendindMsgContext";
 import ReactPaginate from "react-paginate";
 import profileimg from "assets/img/icons/profile.svg";
 
 
 const Notification = () => {
-  const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedOptionsMediahouseList, setSelectedOptionsMediahouseList] =
     useState([]);
   const [mediahouseList, setMediahouseList] = useState([]);
   const [selectedOptionsHopper, setSelectedOptionsHopper] = useState([]);
-  const [HopperList, setHopperList] = useState([]);
+  const [hopperList, setHopperList] = useState([]);
   const [notificationsTitle, setNotificationsTitle] = useState("");
   const [notificationsMessage, setNotificationsMessage] = useState("");
   const MediaHouseId = selectedOptionsMediahouseList.map((item) => item?.value);
@@ -205,14 +188,13 @@ const Notification = () => {
   useEffect(() => {
     if (notificationOther.length > 0) {
       getNotificationById(notificationOther[0]?._id, "received");
-      //  setActiveNotification(notificationOther[0]?._id);
     }
   }, [notificationOther]);
 
   //handling seen notification , update backend
   const handleSeen = async (id, seen, i) => {
     try {
-      const res = await Patch("admin/updateNotification", { id: id });
+      await Patch("admin/updateNotification", { id: id });
       setNotificationOther((prev) => {
         const updatedData = [...prev];
         updatedData[i].is_read = true;
@@ -220,11 +202,9 @@ const Notification = () => {
       })
       getNotificationById(id, "received");
     } catch (error) {
-      // console.log(error);
     }
   };
 
-  // console.log("🚀 ~ file: Notification.jsx:172 ~ Notification ~ notificationById:", notificationById)
   const handleChangeContent = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
   };
@@ -255,27 +235,21 @@ const Notification = () => {
                 }}
               />
               <img src={searchic} className="srch_ic" alt="" />
-              <a onClick={onOpen}>
+              <button onClick={onOpen}>
                 <img src={addchatic} className="add_chat_ic" alt="" />
-              </a>
-              {/* <img src={filtersic} className="filter_chat_ic" alt="" /> */}
+              </button>
             </div>
 
-            {/* Experiment Start */}
             <div className="chat_tabs_wrap">
               <Tabs variant="unstyled">
                 <TabList>
                   <Tab
-                    // onClick={() => getNotificationOTHERS("received")}
-                    // event={"Received"}
                     _selected={{ color: "white", bg: "#000" }}
                     bg="#F3F5F4"
                   >
                     <span>Received</span>
                   </Tab>
                   <Tab
-                    //  onClick={() => getNotificationAdmin("sent")}
-                    // event={"Sent"}
                     _selected={{ color: "white", bg: "#000" }}
                     bg="#F3F5F4"
                   >
@@ -537,7 +511,7 @@ const Notification = () => {
                       Select Hoppers
                     </Text>
                     <MultiSelect
-                      options={HopperList?.map((option) => ({
+                      options={hopperList?.map((option) => ({
                         value: option.id,
                         label: `${option?.first_name} ${option?.last_name}`,
                       }))}

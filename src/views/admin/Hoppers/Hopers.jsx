@@ -3,11 +3,9 @@
 // Chakra imports
 import { Box } from "@chakra-ui/react";
 import DevelopmentTable from "views/admin/Hoppers/components/DevelopmentTable";
-import {
-  columnsDataDevelopment,
-} from "views/admin/Hoppers/variables/columnsData";
 import tableDataDevelopment from "views/admin/Hoppers/variables/tableDataDevelopment.json";
 import React from "react";
+import { columnsDataDevelopment } from "constants";
 
 export default function Hopers() {
   // Chakra Color Mode
