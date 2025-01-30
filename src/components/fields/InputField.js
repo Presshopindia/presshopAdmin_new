@@ -8,14 +8,15 @@ import {
 } from "@chakra-ui/react";
 // Custom components
 import React from "react";
+import PropTypes from "prop-types";
 
-export default function Default(props) {
-  const { id, label, extra, placeholder, type, mb, ...rest } = props;
+function Default(props) {
+  const { id, label, extra, placeholder, type, mb ="30px", ...rest } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
 
   return (
-    <Flex direction='column' mb={mb ? mb : "30px"}>
+    <Flex direction='column' mb={mb}>
       <FormLabel
         display='flex'
         ms='10px'
@@ -43,3 +44,14 @@ export default function Default(props) {
     </Flex>
   );
 }
+
+Default.propTypes = {
+  id: PropTypes.string.isRequired, // The id of the input field
+  label: PropTypes.string.isRequired, // The label text for the input field
+  extra: PropTypes.string, // Extra text to display beside the label (optional)
+  placeholder: PropTypes.string.isRequired, // Placeholder text for the input field
+  type: PropTypes.string.isRequired, // The type of the input (text, password, etc.)
+  mb: PropTypes.string, // Margin bottom (optional)
+};
+
+export default Default;

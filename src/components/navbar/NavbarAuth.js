@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useMemo } from "react";
 import { NavLink } from "react-router-dom";
 
 // Chakra imports
@@ -31,7 +31,7 @@ import { SidebarContext } from "contexts/SidebarContext";
 import { GoChevronDown, GoChevronRight } from "react-icons/go";
 import routes from "routes.js";
 
-export default function AuthNavbar(props) {
+function AuthNavbar(props) {
   const { logo, logoText, secondary, sidebarWidth, ...rest } = props;
   const { colorMode } = useColorMode();
   // Menu States
@@ -60,7 +60,6 @@ export default function AuthNavbar(props) {
     let foundRoute = routes.filter(function (route) {
       return route.items && route.name === routeName;
     });
-    // console.log(foundRoute);
     return foundRoute[0].items;
   }
   function getLinksCollapse(routeName) {
@@ -123,21 +122,12 @@ export default function AuthNavbar(props) {
         <HorizonLogo h='26px' w='175px' my='32px' color={logoColor} />
       </Link>
     );
-    // mainText = useColorModeValue("gray.700", "gray.200");
-    // navbarBg = useColorModeValue("white", "navy.800");
-    // navbarShadow = useColorModeValue(
-    //   "0px 7px 23px rgba(0, 0, 0, 0.05)",
-    //   "none"
-    // );
-    // bgButton = useColorModeValue("gray.700", "white");
-    // colorButton = useColorModeValue("white", "gray.700");
-    // navbarPosition = "fixed";
   }
   const createNftsLinks = (routes) => {
-    return routes.map((link, key) => {
+    return routes.map((link) => {
       return (
         <NavLink
-          key={key}
+          key={link.path}
           to={link.layout + link.path}
           style={{ maxWidth: "max-content", marginLeft: "40px" }}>
           <Text color='gray.400' fontSize='sm' fontWeight='normal'>
@@ -148,10 +138,10 @@ export default function AuthNavbar(props) {
     });
   };
   const createDashboardsLinks = (routes) => {
-    return routes.map((link, key) => {
+    return routes.map((link) => {
       return (
         <NavLink
-          key={key}
+          key={link.path}
           to={link.layout + link.path}
           style={{ maxWidth: "max-content", marginLeft: "40px" }}>
           <Text color='gray.400' fontSize='sm' fontWeight='normal'>
@@ -162,10 +152,10 @@ export default function AuthNavbar(props) {
     });
   };
   const createMainLinks = (routes) => {
-    return routes.map((link, key) => {
+    return routes.map((link) => {
       if (link.collapse === true) {
         return (
-          <Stack key={key} direction='column' maxW='max-content'>
+          <Stack key={link.path} direction='column' maxW='max-content'>
             <Stack
               direction='row'
               spacing='0px'
@@ -193,7 +183,7 @@ export default function AuthNavbar(props) {
       } else {
         return (
           <NavLink
-            key={key}
+            key={link.path}
             to={link.layout + link.path}
             style={{ maxWidth: "max-content", marginLeft: "40px" }}>
             <Text color='gray.400' fontSize='sm' fontWeight='normal'>
@@ -205,10 +195,10 @@ export default function AuthNavbar(props) {
     });
   };
   const createAuthLinks = (routes) => {
-    return routes.map((link, key) => {
+    return routes.map((link) => {
       if (link.collapse === true) {
         return (
-          <Stack key={key} direction='column' my='auto' maxW='max-content'>
+          <Stack key={link.path} direction='column' my='auto' maxW='max-content'>
             <Stack
               direction='row'
               spacing='0px'
@@ -237,7 +227,7 @@ export default function AuthNavbar(props) {
       } else {
         return (
           <NavLink
-            key={key}
+            key={link.path}
             to={link.layout + link.path}
             style={{ maxWidth: "max-content", marginLeft: "40px" }}>
             <Text color='gray.400' fontSize='sm' fontWeight='normal'>
@@ -324,32 +314,6 @@ export default function AuthNavbar(props) {
               <SimpleGrid columns='3' gap='10px' minW='500px' me='20px'>
                 {createAuthLinks(authObject)}
               </SimpleGrid>
-              {/* <Flex
-                bg='red'
-                direction='column'
-                justify='center'
-                align='center'
-                w='stretch'
-                minH='230px'
-                borderRadius='15px'>
-                <IconBox
-                  bg='white'
-                  color='white'
-                  borderRadius='50%'
-                  h='50px'
-                  w='50px'
-                  mb='12px'>
-                  <Icon as={AiFillStar} w='25px' h='25px' color='blue.500' />
-                </IconBox>
-                <Text
-                  fontSize='xl'
-                  fontWeight='bold'
-                  color='#fff'
-                  maxW='80%'
-                  textAlign='center'>
-                  Explore our utilities pages
-                </Text>
-              </Flex> */}
             </Flex>
           </MenuList>
         </Menu>
@@ -435,7 +399,7 @@ export default function AuthNavbar(props) {
   );
 
   return (
-    <SidebarContext.Provider value={{ sidebarWidth }}>
+    <SidebarContext.Provider value={useMemo(() => ({ sidebarWidth }), [sidebarWidth])}>
       <Flex
         position={navbarPosition}
         top='16px'
@@ -501,6 +465,15 @@ export default function AuthNavbar(props) {
 }
 
 AuthNavbar.propTypes = {
-  color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
-  brandText: PropTypes.string,
+  logo: PropTypes.element,          // Assuming logo is a React element like a JSX logo
+  logoText: PropTypes.string,       // The text for the logo
+  secondary: PropTypes.bool,        // A boolean indicating if it's a secondary navbar
+  sidebarWidth: PropTypes.oneOfType([ // sidebarWidth can either be a number or a string
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]), // Color prop for navbar
+  brandText: PropTypes.string,      // Text to be displayed as brand text (optional)
 };
+
+export default AuthNavbar

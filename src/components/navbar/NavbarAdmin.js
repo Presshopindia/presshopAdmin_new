@@ -13,10 +13,9 @@ import {
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import AdminNavbarLinks from "components/navbar/NavbarLinksAdmin";
-import { HSeparator } from "components/separator/Separator";
 import DigitalClock from "components/DigitalClock";
 
-export default function AdminNavbar(props) {
+function AdminNavbar(props) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -130,7 +129,6 @@ export default function AdminNavbar(props) {
                 fontSize='19px'
                 lineHeight='10px'
                 fontFamily={"AirbnbBk"}>
-                {/* {"12:36 PM, 15 February 2023"} */}
                 <DigitalClock />
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -152,9 +150,11 @@ export default function AdminNavbar(props) {
 }
 
 AdminNavbar.propTypes = {
-  brandText: PropTypes.string,
-  variant: PropTypes.string,
-  secondary: PropTypes.bool,
-  fixed: PropTypes.bool,
-  onOpen: PropTypes.func,
+  brandText: PropTypes.string.isRequired, // The text displayed as the brand name
+  secondary: PropTypes.bool, // Determines if the navbar is in secondary mode
+  fixed: PropTypes.bool, // Determines if the navbar is fixed or not
+  onOpen: PropTypes.func, // Function to open the navbar menu
+  message: PropTypes.string, // Message displayed when secondary navbar is active (optional)
 };
+
+export default AdminNavbar;

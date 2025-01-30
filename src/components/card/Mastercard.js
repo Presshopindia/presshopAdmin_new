@@ -8,6 +8,7 @@ import Card from "components/card/Card.js";
 // Assets
 import bgMastercard from "assets/img/dashboards/Debit.png";
 import { RiMastercardFill } from "react-icons/ri";
+import PropTypes from "prop-types";
 
 export default function Banner(props) {
   const { exp, cvv, number, ...rest } = props;
@@ -57,3 +58,9 @@ export default function Banner(props) {
     </Card>
   );
 }
+
+Banner.propTypes = {
+  exp: PropTypes.string.isRequired, // Expected to be a string (date format like "12/24")
+  cvv: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // CVV can be string or number
+  number: PropTypes.string.isRequired, // Card number as a string (e.g., "1234 5678 9012 3456")
+};

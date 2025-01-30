@@ -19,7 +19,8 @@ import {
   MdOutlineLightbulb,
   MdOutlineSettings,
 } from "react-icons/md";
-export default function Banner(props) {
+
+function Banner(props) {
   const { icon, ...rest } = props;
 
   // Ellipsis modals
@@ -140,3 +141,8 @@ export default function Banner(props) {
     </Menu>
   );
 }
+
+Banner.propTypes = {
+  icon: PropTypes.string
+}
+export default Banner;

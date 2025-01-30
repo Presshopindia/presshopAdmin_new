@@ -13,14 +13,13 @@ import Card from "components/card/Card.js";
 // Custom icons
 import React from "react";
 import Menu from "../menu/MainMenu";
+import PropTypes from "prop-types";
 
-export default function Default(props) {
+function Default(props) {
   const { startContent, endContent, name, growth,reduct, value } = props;
   const textColor = useColorModeValue("#000", "black");
-  const textColorSecondary = "secondaryGray.600";
 
   return (
-    <>
     <Card py='15px'>
       <Flex
         my='auto'
@@ -73,7 +72,17 @@ export default function Default(props) {
         </Flex>
         <Menu />
       </Flex>
-    </Card>
-    </>    
+    </Card>   
   );
 }
+
+Default.propTypes = {
+  startContent: PropTypes.node, // React node for start content
+  endContent: PropTypes.node, // React node for end content
+  name: PropTypes.string.isRequired, // Name of the stat
+  growth: PropTypes.string, // Growth value (optional)
+  reduct: PropTypes.string, // Reduction value (optional)
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Stat value
+};
+
+export default Default;

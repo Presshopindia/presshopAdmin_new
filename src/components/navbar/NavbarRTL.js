@@ -150,8 +150,8 @@ export default function AdminNavbar(props) {
 
 AdminNavbar.propTypes = {
   brandText: PropTypes.string,
-  variant: PropTypes.string,
   secondary: PropTypes.bool,
   fixed: PropTypes.bool,
   onOpen: PropTypes.func,
+  message: PropTypes.string
 };

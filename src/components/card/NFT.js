@@ -16,8 +16,9 @@ import Card from "components/card/Card.js";
 // Assets
 import React, { useState } from "react";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
+import PropTypes from "prop-types";
 
-export default function NFT(props) {
+function NFT(props) {
   const { image, name, author, bidders, download, currentbid } = props;
   const [like, setLike] = useState(false);
   const textColor = useColorModeValue("navy.700", "white");
@@ -150,3 +151,14 @@ export default function NFT(props) {
     </Card>
   );
 }
+
+NFT.propTypes = {
+  image: PropTypes.string.isRequired, // Image URL
+  name: PropTypes.string.isRequired, // Name of the NFT
+  author: PropTypes.string.isRequired, // Author of the NFT
+  bidders: PropTypes.arrayOf(PropTypes.string).isRequired, // Array of bidder avatar URLs
+  download: PropTypes.string.isRequired, // Download link
+  currentbid: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Current bid value
+};
+
+export default NFT

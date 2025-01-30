@@ -137,7 +137,7 @@ export const DashboardLogo = createIcon({
   displayName: "DashboardLogo",
   viewBox: "0 0 1000 257",
   path: (
-    <g width='998' height='257' viewBox='0 0 998 257' fill='none'>
+    <svg width='998' height='257' viewBox='0 0 998 257' fill='none'>
       <g clipPath='url(#clip0)'>
         <path
           d='M388.5 115.302C406.112 115.302 413.966 126.726 416.584 136.96L441.336 127.916C436.576 109.352 419.44 89.836 388.262 89.836C354.942 89.836 329 115.54 329 151.24C329 186.464 354.942 212.882 388.976 212.882C419.44 212.882 436.814 193.128 442.288 175.04L418.012 166.234C415.394 175.04 407.064 187.654 388.976 187.654C371.602 187.654 356.608 174.564 356.608 151.24C356.608 127.916 371.602 115.302 388.5 115.302Z'
@@ -177,14 +177,14 @@ export const DashboardLogo = createIcon({
           x2='128.5'
           y2='257'
           gradientUnits='userSpaceOnUse'>
-          <stop stop-color='#7BCBD4' />
-          <stop offset='1' stop-color='#29C6B7' />
+          <stop stopColor='#7BCBD4' />
+          <stop offset='1' stopColor='#29C6B7' />
         </linearGradient>
         <clipPath id='clip0'>
           <rect width='997.832' height='257' fill='white' />
         </clipPath>
       </defs>
-    </g>
+    </svg>
   ),
 });
 
@@ -232,14 +232,14 @@ export const GlobeIcon = createIcon({
         fill='transparent'
         d='M11.25 2.109a9.14 9.14 0 100 18.281 9.14 9.14 0 000-18.281z'
         strokeWidth='.75'
-        stroke-miterlimit='10'
+        strokeMiterlimit='10'
       />
       <path
         stroke='currentColor'
         fill='transparent'
         d='M11.25 2.109C8.698 2.109 6.3 6.2 6.3 11.249c0 5.048 2.4 9.14 4.951 9.14 2.552 0 4.951-4.092 4.951-9.14 0-5.048-2.399-9.14-4.95-9.14z'
         strokeWidth='.75'
-        stroke-miterlimit='10'
+        strokeMiterlimit='10'
       />
       <path
         stroke='currentColor'
@@ -259,7 +259,7 @@ export const GlobeIcon = createIcon({
         fill='transparent'
         d='M11.25 2.109v18.28M20.39 11.249H2.11'
         strokeWidth='.75'
-        stroke-miterlimit='10'
+        strokeMiterlimit='10'
       />
     </g>
   ),

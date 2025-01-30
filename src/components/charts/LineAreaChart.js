@@ -1,5 +1,6 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import PropTypes from "prop-types";
 
 class LineChart extends React.Component {
   constructor(props) {
@@ -30,5 +31,16 @@ class LineChart extends React.Component {
     );
   }
 }
+
+LineChart.propTypes = {
+  chartData: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      data: PropTypes.arrayOf(PropTypes.number).isRequired,
+    })
+  ).isRequired, // Series data for the chart
+  chartOptions: PropTypes.object.isRequired, // Chart configuration options
+};
+
 
 export default LineChart;

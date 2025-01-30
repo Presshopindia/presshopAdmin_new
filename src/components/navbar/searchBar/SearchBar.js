@@ -7,10 +7,9 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import { Get } from "api/admin.services";
-import { Post } from "api/admin.services";
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import PropTypes from "prop-types";
+
 export function SearchBar(props) {
   // Pass the computed styles into the `__css` prop
   const { variant, background, children, placeholder, borderRadius, ...rest } =
@@ -20,22 +19,7 @@ export function SearchBar(props) {
   const inputBg = useColorModeValue("secondaryGray.300", "navy.900");
   const inputText = useColorModeValue("gray.700", "gray.100");
   const [searchInput, setSearchInput] = useState("")
-  const [hastags, setHastags] = useState([])
-  const [mounted, setMounted] = useState(true); // Flag to track mount status
   const history = useHistory();
-
-  const getHastags = async () => {
-    try {
-      await Get(`admin/getTags?tagName=${searchInput}`).then((res) => {
-        if (mounted) {
-          setHastags(res?.data?.tags || []);
-        }
-      })
-    } catch (error) {
-
-    }
-  }
-
 
   useEffect(() => {
 
@@ -49,70 +33,45 @@ export function SearchBar(props) {
     }
   }, [searchInput])
 
-  useEffect(() => {
-    return () => {
-      // Cleanup function to update mounted flag when unmounting
-      setMounted(false);
-    };
-  }, []);
   return (
 
     <InputGroup position={"relative"} w={{ base: "100%", md: "200px" }} {...rest}>
-      {/* {console.log(hastags, `<---`)} */}
-      <InputLeftElement
-        children={
-          <IconButton
-            bg='inherit'
-            borderRadius='inherit'
-            _hover='none'
-            _active={{
-              bg: "inherit",
-              transform: "none",
-              borderColor: "transparent",
-            }}
-            _focus={{
-              boxShadow: "none",
-            }}
-            icon={
-              <SearchIcon color={searchIconColor} w='15px' h='15px' />
-            }></IconButton>
-        }
-      />
+      <InputLeftElement>
+        <IconButton
+          bg='inherit'
+          borderRadius='inherit'
+          _hover='none'
+          _active={{
+            bg: "inherit",
+            transform: "none",
+            borderColor: "transparent",
+          }}
+          _focus={{
+            boxShadow: "none",
+          }}
+          icon={
+            <SearchIcon color={searchIconColor} w='15px' h='15px' />
+          } />
+      </InputLeftElement>
       <Input
         variant='search'
         fontSize='sm'
-        bg={background ? background : inputBg}
+        bg={background || inputBg}
         color={inputText}
         fontWeight='500'
         _placeholder={{ color: "gray.400", fontSize: "14px" }}
-        borderRadius={borderRadius ? borderRadius : "30px"}
-        placeholder={placeholder ? placeholder : "Search content"}
+        borderRadius={borderRadius || "30px"}
+        placeholder={placeholder || "Search content"}
         onChange={(e) => setSearchInput(e.target.value)}
       />
-
-      {/* {searchInput &&
-        <div className="srched_wrap">
-          <ul className="srched_list">
-            {hastags && hastags?.map((curr) => {
-              return (
-                <li >
-                  <Link onClick={() => {
-                    history.push(`/admin/searched-content-list/${curr?._id}/Searched content`)
-                    setSearchInput("")
-
-
-                  }} className="srch_link">
-                    {curr?.name}
-                  </Link>
-                </li>
-
-              )
-            })
-
-            }
-          </ul>
-          
-        </div>} */}
     </InputGroup>
   );
 }
+
+SearchBar.propTypes = {
+  variant: PropTypes.string,
+  background: PropTypes.string,
+  children: PropTypes.node,
+  placeholder: PropTypes.string,
+  borderRadius: PropTypes.string,
+};

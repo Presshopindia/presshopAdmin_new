@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
+import PropTypes from "prop-types";
 
 class ColumnChart extends Component {
   constructor(props) {
@@ -29,5 +30,15 @@ class ColumnChart extends Component {
     );
   }
 }
+
+ColumnChart.propTypes = {
+  chartData: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      data: PropTypes.arrayOf(PropTypes.number).isRequired,
+    })
+  ).isRequired, // Series data for the chart
+  chartOptions: PropTypes.object.isRequired, // Chart configuration options
+};
 
 export default ColumnChart;

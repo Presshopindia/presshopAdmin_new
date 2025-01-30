@@ -9,17 +9,18 @@ import {
 } from "@chakra-ui/react";
 // Custom components
 import React from "react";
+import PropTypes from "prop-types";
 
-export default function Default(props) {
+function Default(props) {
   const {
     id,
     label,
     isChecked,
     onChange,
     desc,
-    textWidth,
+    textWidth = "75%",
     reversed,
-    fontSize,
+    fontSize = "md",
     ...rest
   } = props;
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
@@ -50,7 +51,7 @@ export default function Default(props) {
             _hover={{ cursor: "pointer" }}
             direction='column'
             mb='0px'
-            maxW={textWidth ? textWidth : "75%"}>
+            maxW={textWidth}>
             <Text
               color={textColorPrimary}
               fontSize='md'
@@ -59,7 +60,7 @@ export default function Default(props) {
             </Text>
             <Text
               color='secondaryGray.600'
-              fontSize={fontSize ? fontSize : "md"}>
+              fontSize={fontSize}>
               {desc}
             </Text>
           </FormLabel>
@@ -70,7 +71,7 @@ export default function Default(props) {
             htmlFor={id}
             _hover={{ cursor: "pointer" }}
             direction='column'
-            maxW={textWidth ? textWidth : "75%"}>
+            maxW={textWidth}>
             <Text
               color={textColorPrimary}
               fontSize='md'
@@ -79,7 +80,7 @@ export default function Default(props) {
             </Text>
             <Text
               color='secondaryGray.600'
-              fontSize={fontSize ? fontSize : "md"}>
+              fontSize={fontSize}>
               {desc}
             </Text>
           </FormLabel>
@@ -105,3 +106,16 @@ export default function Default(props) {
     </Box>
   );
 }
+
+Default.propTypes = {
+  id: PropTypes.string.isRequired, // The id of the switch input
+  label: PropTypes.string.isRequired, // The label text for the switch
+  isChecked: PropTypes.bool, // Determines if the switch is checked
+  onChange: PropTypes.func, // Function to handle the change event of the switch
+  desc: PropTypes.string, // Optional description text
+  textWidth: PropTypes.string, // The width of the label text (default "75%")
+  reversed: PropTypes.bool, // Determines the layout of the switch and label (default false)
+  fontSize: PropTypes.string, // Font size of the description (default "md")
+};
+
+export default Default;

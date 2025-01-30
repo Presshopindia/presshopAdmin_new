@@ -6,8 +6,9 @@ import Card from "components/card/Card.js";
 import TransparentMenu from "components/menu/TransparentMenu";
 // Custom icons
 import { IoEllipsisVertical } from "react-icons/io5";
+import PropTypes from "prop-types";
 
-export default function Default(props) {
+function Default(props) {
   const { avatar, name, job, ...rest } = props;
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const bg = useColorModeValue("white", "#1B254B");
@@ -54,3 +55,12 @@ export default function Default(props) {
     </Card>
   );
 }
+
+// ✅ Define PropTypes
+Default.propTypes = {
+  avatar: PropTypes.string.isRequired, // Expected to be a URL string
+  name: PropTypes.string.isRequired, // Expected to be a string
+  job: PropTypes.string.isRequired, // Expected to be a string
+};
+
+export default Default;

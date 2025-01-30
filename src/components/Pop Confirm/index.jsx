@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
+import PropTypes from "prop-types";
 
 function PopupConfirm({
   title,
@@ -29,26 +30,27 @@ function PopupConfirm({
     onClose();
   };
 
-  return (
-    <>
-      {
-        buttonTitle == "AiOutlineDelete"
-          ?
+  const renderButton = () => {
+    switch(buttonTitle) {
+      case "AiOutlineDelete":
+        return (
           <Tooltip label="Delete"  placement="right">
             <span><AiOutlineDelete style={{ cursor: "pointer" }} className={`icn ${className}`} onClick={onOpen} /></span>
           </Tooltip>
-          :
-          buttonTitle == "RxCross1"
-            ?
+        )
+
+        case "RxCross1":
+          return (
             <Tooltip label="Delete">
               <span><RxCross1 className={`icn ${className}`} onClick={onOpen} /></span>
             </Tooltip>
-            :
-            buttonTitle == "Testimonial"
-              ?
-              <span className="dlte" style={{ cursor: "pointer" }} onClick={onOpen}>
+          )
+          
+          case "Testimonial":
+            return (
+              <button className="dlte" style={{ cursor: "pointer", background: "none", border:"none" }} onClick={onOpen}>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_5605_71719)">
+                  <g clipPath="url(#clip0_5605_71719)">
                     <path d="M1.09375 2.94531H10.8715" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M2.31641 2.94531V9.66753C2.31641 10.6801 3.13722 11.5009 4.14974 11.5009H7.81641C8.82894 11.5009 9.64974 10.6801 9.64974 9.66753V2.94531" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M4.15039 1.72222C4.15039 1.04721 4.6976 0.5 5.37261 0.5H6.59484C7.26987 0.5 7.81706 1.04721 7.81706 1.72222V2.94445H4.15039V1.72222Z" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
@@ -59,18 +61,25 @@ function PopupConfirm({
                     </clipPath>
                   </defs>
                 </svg>
+              </button>
+            )
 
-              </span>
-              :
-              <Button
+          default :
+          return (
+            <Button
                 className="theme_btn tbl_btn del-btn"
                 colorScheme="red"
                 onClick={onOpen}
               >
                 {buttonTitle}
               </Button>
-      }
+          )
+    }
+  }
 
+  return (
+    <>
+      {renderButton()}
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -100,3 +109,13 @@ function PopupConfirm({
 }
 
 export default PopupConfirm;
+
+PopupConfirm.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  customerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  buttonTitle: PropTypes.string,
+  className: PropTypes.string,
+};

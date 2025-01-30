@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-// import { Pause, Play, Send, Square } from 'lucide-react';
 
 const AudioRecorder = () => {
     const [isRecording, setIsRecording] = useState(false);
@@ -158,7 +157,7 @@ const AudioRecorder = () => {
                 )}
             </div>
 
-            <style jsx>{`
+            <style>{`
         .pulsing-dot {
           width: 10px;
           height: 10px;
