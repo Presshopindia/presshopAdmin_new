@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Select from "react-select";
 import makeAnimated from "react-select/animated"; // for animations in select
 import { Get } from "api/admin.services";
@@ -12,7 +13,6 @@ const TagSelect = ({ curr, index, setPublishedData }) => {
     try {
       const response = await Get("admin/getTags");
       if (response) {
-        console.log("tags", response.data.tags);
         const fetchedTags = response.data.tags.map((tag) => ({
           label: `#${tag.name}`,
           value: tag.name,
@@ -27,7 +27,6 @@ const TagSelect = ({ curr, index, setPublishedData }) => {
 
   const handleSelectChange = (selectedOptions) => {
     if (!selectedOptions) return;
-    console.log("selectedoption", selectedOptions);
     const selectedTags = selectedOptions.map((option) => ({
       name: option.value,
       _id: option._id,
@@ -118,3 +117,17 @@ const TagSelect = ({ curr, index, setPublishedData }) => {
 };
 
 export default TagSelect;
+
+TagSelect.propTypes = {
+  curr: PropTypes.shape({
+    tagData: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        _id: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+    tag_ids: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
+  index: PropTypes.number.isRequired,
+  setPublishedData: PropTypes.func.isRequired,
+};

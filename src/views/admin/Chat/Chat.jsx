@@ -380,7 +380,7 @@ export default function Chat() {
 
     try {
       await addDoc(messageRef, messageData);
-      setLastMessage(message, messageType, thumbnailURL, roomDetails?.room_id);
+      setLastMessage(message, messageType, roomDetails?.room_id);
       setMsg("");
       setFile(null);
       GetMessages(roomDetails?.room_id);
@@ -839,7 +839,7 @@ export default function Chat() {
                                       curr?.roomId,
                                       "read"
                                     );
-                                    latestMsgSeen(curr?.roomId);
+                                    latestMsgSeen();
                                     // handleSeen(curr?.room_id, "seen");
                                     updateStatusDocument(
                                       profile?._id,
@@ -970,7 +970,7 @@ export default function Chat() {
                                     curr?.roomId,
                                     "read"
                                   );
-                                  latestMsgSeen(curr?.roomId);
+                                  latestMsgSeen();
                                 }}
                               >
                                 <div className="cht_img">
