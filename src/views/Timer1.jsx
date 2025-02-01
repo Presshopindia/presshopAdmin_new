@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 
 const Timer1 = ({ deadline }) => {
@@ -35,6 +36,10 @@ const Timer1 = ({ deadline }) => {
   };
 
   return <span>{formatTime()}</span>;
+};
+
+Timer1.propTypes = {
+  deadline: PropTypes.isRequired,
 };
 
 export default Timer1;

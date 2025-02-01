@@ -4,14 +4,12 @@
 import {
   Box,
   Checkbox,
-  //  SimpleGrid
+  Container,
+  Flex, Text, Select, useColorModeValue, Button,
+  Input, InputLeftElement, InputRightElement, InputGroup
 } from "@chakra-ui/react";
 import { React, useState } from "react";
-import { Flex, Text, Select, useColorModeValue, Icon, Button, ButtonGroup } from "@chakra-ui/react";
 import Card from "components/card/Card";
-import { Container } from '@chakra-ui/react';
-import { Input, InputLeftElement, InputRightElement, InputGroup } from '@chakra-ui/react';
-import { useHistory } from "react-router-dom";
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 //New Imports//
@@ -34,7 +32,6 @@ export default function AdminRegistration() {
   const [value, setValue] = useState()
 
   const textColor = useColorModeValue("#000", "white");
-  const history = useHistory()
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <Card className="add_hopper admin_reg"
@@ -120,7 +117,7 @@ export default function AdminRegistration() {
                 <Input placeholder="Post code *" />
               </InputGroup>
 
-              <div className="select_wrapper" flex={0.4}>
+              <div className="select_wrapper">
                 <img className="location-icon" src={location} alt="" />
                 <Select className="icon_left_side" placeholder='City' >
                   <option value='A'>City A</option>
@@ -129,7 +126,7 @@ export default function AdminRegistration() {
                 </Select>
               </div>
 
-              <div className="select_wrapper" flex={0.4}>
+              <div className="select_wrapper">
                 <img className="location-icon " src={location} alt="" />
                 <Select className="icon_left_side" placeholder='Country' >
                   <option value='A'>Country A</option>
@@ -273,7 +270,7 @@ export default function AdminRegistration() {
               </Flex>
             </div>
             <div className="dtl_wrap_img">
-              <div className="Admin_img" align='center' >
+              <div className="Admin_img">
                 <div className="edit_img_curr">
                   <img src={AddPic} alt=" admin avatar" />
                   {/* <label htmlFor="admin_img_curr">
@@ -332,7 +329,7 @@ export default function AdminRegistration() {
             </Text>
           </Flex>
           <Flex justify='start' flexDirection="column" mb='20px' gap='20px' align='start'>
-            <div className="check_wrap check_wrapper" mb="10px">
+            <div className="check_wrap check_wrapper">
               <Checkbox
                 colorScheme='brandScheme'
                 me='10px'

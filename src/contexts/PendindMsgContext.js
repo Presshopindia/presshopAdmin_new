@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { Get } from "api/admin.services";
 import dataContext from "views/admin/ContextFolder/Createcontext";
+import PropTypes from "prop-types";
 export const PendingMsgContext = createContext();
 
 //context provider
@@ -89,5 +90,10 @@ export const PendingMsgProvider = ({ children }) => {
     </PendingMsgContext.Provider>
   );
 };
+
+PendingMsgProvider.propTypes = {
+  children: PropTypes.isRequired
+}
+
 
 export const useMsgContext = () => useContext(PendingMsgContext);

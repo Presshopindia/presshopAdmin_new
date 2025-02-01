@@ -269,7 +269,7 @@ export default function EditAdmin() {
               </Flex>
             </div>
             <div className="dtl_wrap_img">
-              <div className="Admin_img" align='center' >
+              <div className="Admin_img">
                 <div className="edit_img_curr">
                   <img src={AddPic} alt=" admin avatar" />
                   {/* <label htmlFor="admin_img_curr">
@@ -328,7 +328,7 @@ export default function EditAdmin() {
             </Text>
           </Flex>
           <Flex justify='start' flexDirection="column" mb='20px' gap='20px' align='start'>
-            <div className="check_wrap check_wrapper" mb="10px">
+            <div className="check_wrap check_wrapper">
               <Checkbox
                 colorScheme='brandScheme'
                 me='10px'

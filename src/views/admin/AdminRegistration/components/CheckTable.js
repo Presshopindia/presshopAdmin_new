@@ -21,7 +21,7 @@ import {
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
-export default function CheckTable(props) {
+function CheckTable(props) {
   const { columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -68,12 +68,11 @@ export default function CheckTable(props) {
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
           {headerGroups.map((headerGroup, index) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
+            <Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
               {headerGroup.headers.map((column, index) => (
                 <Th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   pe='10px'
-                  key={index}
                   borderColor={borderColor}>
                   <Flex
                     justify='space-between'
@@ -88,11 +87,11 @@ export default function CheckTable(props) {
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {page.map((row, index) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()} key={index}>
-                {row.cells.map((cell, index) => {
+              <Tr {...row.getRowProps()} key={row?.id}>
+                {row.cells.map((cell) => {
                   let data = "";
                   if (cell.column.Header === "NAME") {
                     data = (
@@ -119,13 +118,7 @@ export default function CheckTable(props) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "QUANTITY") {
-                    data = (
-                      <Text color={textColor} fontSize='sm' fontWeight='700'>
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "DATE") {
+                  } else if (cell.column.Header === "QUANTITY" || cell.column.Header === "DATE") {
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700'>
                         {cell.value}
@@ -135,7 +128,6 @@ export default function CheckTable(props) {
                   return (
                     <Td
                       {...cell.getCellProps()}
-                      key={index}
                       fontSize={{ sm: "14px" }}
                       minW={{ sm: "150px", md: "200px", lg: "auto" }}
                       borderColor='transparent'>
@@ -151,3 +143,10 @@ export default function CheckTable(props) {
     </Card>
   );
 }
+
+CheckTable.propTypes = {
+  columnsData: PropTypes.isRequired,
+  tableData : PropTypes.isRequired
+};
+
+export default CheckTable;

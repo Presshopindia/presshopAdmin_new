@@ -15,63 +15,36 @@ import {
   TableContainer,
   Checkbox,
   Button,
-  Progress,
+  Tooltip
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import Card from "components/card/Card";
-import { BsEye } from "react-icons/bs";
+import { BsEye, BsArrowRight } from "react-icons/bs";
 import camera from "assets/img/icons/camera.svg";
 import crown from "assets/img/icons/crown.png";
 import share from "assets/img/icons/share.png";
-import star from "assets/img/icons/star.png";
 import video from "assets/img/icons/video.svg";
-import auth1 from "assets/img/auth/auth1.svg";
-import avatar13 from "assets/img/avatars/avatar13.png";
 import watch from "assets/img/icons/watch.svg";
 import calendar from "assets/img/icons/calendar.svg";
 import print from "assets/img/icons/print.png";
 import { useHistory } from "react-router-dom";
-import content1 from "assets/img/nfts/NftBanner1.png";
-import celebrity from "assets/img/icons/celebrity.png";
-import publication1 from "assets/img/profile/publication1.svg";
-import { Tooltip } from "@chakra-ui/react";
-import avt1 from "assets/img/avatars/avt1.png";
-import avt2 from "assets/img/avatars/avt2.png";
-import avt3 from "assets/img/avatars/avt3.png";
-import avt4 from "assets/img/avatars/avt4.png";
 import monitor from "assets/img/icons/monitor.svg";
 import mobile from "assets/img/icons/mobile.svg";
 import mail from "assets/img/icons/mail.svg";
 import pro from "assets/img/icons/pro.svg";
-import avatar14 from "assets/img/avatars/avatar14.svg";
 import idic from "assets/img/icons/id.svg";
 import shared from "assets/img/icons/shared.svg";
-import img1 from "assets/img/nfts/Nft4.png";
-import img2 from "assets/img/avatars/avatar2.png";
-import img3 from "assets/img/nfts/Nft2.png";
 import docuploaded from "assets/img/icons/img-upld.svg";
 import write from "assets/img/icons/write.svg";
-import publication2 from "assets/img/profile/publication2.svg";
-import publication3 from "assets/img/profile/publication3.svg";
-// import invic from "assets/img/icons/invoice.svg";
-import content2 from "assets/img/auth/auth2.svg";
-import content3 from "assets/img/auth/auth3.svg";
-import { BsArrowRight } from "react-icons/bs";
-import recic from "assets/img/icons/recording.svg";
-import crime from "assets/img/icons/crime.svg";
 import interview from "assets/img/icons/interview.svg";
-import news from "assets/img/icons/news.svg";
 import amt from "assets/img/icons/ametuer.svg";
-import { Get } from "api/admin.services";
+import { Get, Patch, Post } from "api/admin.services";
 import { toast } from "react-toastify";
-import { Patch } from "api/admin.services";
 import moment from "moment/moment";
-import { Post } from "api/admin.services";
 import dataContext from "../ContextFolder/Createcontext";
 import Loader from "components/Loader";
 import Timer from "../Timer";
 import ReactPaginate from "react-paginate";
-import { async } from "@firebase/util";
 import Share from "components/share/Share";
 import SortFilterDashboard from "components/sortfilters/SortFilterDashboard";
 import { deleteCSV } from "utils/commonFunction";
@@ -83,15 +56,13 @@ import DeletedContents from "../Content/components/DeletedContents";
 import TagSelect from "components/Hashtags";
 
 export default function AdminControls() {
-  //pagination
   const [currentPageEmployee, setCurrentPageEmployee] = useState(1);
   const [totalEmployeePages, setTotalEmployeePages] = useState(0);
   const [currentHopperPages, setCurrentHopperPages] = useState(1);
   const [totalHopperPages, setTotalHopperPages] = useState(0);
   const [currentPagesPublication, setCurrentPagesPublication] = useState(1);
   const [totalPublicationPages, setTotalPublicationPages] = useState(0);
-  const [onboard, setonboard] = useState([]);
-  const [publicationData, setpublicationData] = useState([]);
+  const [publicationData, setPublicationData] = useState([]);
   const [employeeData, setEmployeeData] = useState([]);
   const history = useHistory();
   const textColor = useColorModeValue("#000", "white");
@@ -115,11 +86,11 @@ export default function AdminControls() {
   // const {adminRights,setAminRights}=useContext(dataContext)
   const { profile } = useContext(dataContext);
   // for share
-  const [path1, setpath1] = useState("");
-  const [path2, setpath2] = useState("");
-  const [path3, setpath3] = useState("");
-  const [path4, setpath4] = useState("");
-  const [path5, setpath5] = useState("");
+  const [path1, setPath1] = useState("");
+  const [path2, setPath2] = useState("");
+  const [path3, setPath3] = useState("");
+  const [path4, setPath4] = useState("");
+  const [path5, setPath5] = useState("");
   const [show, setShow] = useState(false);
   const [csv, setCsv] = useState("");
 
@@ -161,12 +132,11 @@ export default function AdminControls() {
         `admin/getContentList?status=pending&limit=${perPage}&offset=${offset}&${parametersName}=${parameters}&${parametersName1}=${parameters1}`
       ).then((res) => {
         setContentList(res?.data?.contentList);
-        setpath1(res?.data?.fullPath);
+        setPath1(res?.data?.fullPath);
         setTotalContentPages(res?.data?.totalCount / perPage);
         setLoading(false);
       });
     } catch (err) {
-      // console.log("<---Have a erro ->", err);
       setLoading(false);
     }
   };
@@ -526,7 +496,7 @@ export default function AdminControls() {
       await Get(
         `admin/liveTasks?offset=${offset}&limit=${perPage}&${parametersName}=${parameters}&${parametersName1}=${parameters1}`
       ).then((res) => {
-        setpath2(res?.data?.fullPath);
+        setPath2(res?.data?.fullPath);
         setLiveTasks(res.data?.response);
         setTotalLiveTaskPages(res.data?.count / perPage);
         setLoading(false);
@@ -610,8 +580,8 @@ export default function AdminControls() {
       await Get(
         `admin/getPublicationList?offset=${offset}&limit=${perPage}&${parametersName}=${parameters}&${parametersName1}=${parameters1}`
       ).then((res) => {
-        setpublicationData(res.data.data);
-        setpath3(res?.data?.fullPath);
+        setPublicationData(res.data.data);
+        setPath3(res?.data?.fullPath);
         setTotalPublicationPages(res?.data?.totalCount / perPage);
         setLoading(false);
       });
@@ -689,7 +659,7 @@ export default function AdminControls() {
       await Get(
         `admin/getHopperList?offset=${offset}&limit=${perPage}&${parametersName}=${parameters}&${parametersName1}=${parameters1}`
       ).then((res) => {
-        setpath4(res?.data?.fullPath);
+        setPath4(res?.data?.fullPath);
         setHopperDetails(res.data.response.hopperList);
         setTotalHopperPages(res.data.response.totalCount / perPage);
         setLoading(false);
@@ -776,7 +746,7 @@ export default function AdminControls() {
           isNaN(offset) ? 0 : offset
         }&limit=${perPage}&${parametersName}=${parameters}&${parametersName1}=${parameters1}`
       ).then((res) => {
-        setpath5(res?.data?.fullPath);
+        setPath5(res?.data?.fullPath);
         setEmployeeData(res.data.emplyeeList);
         setTotalEmployeePages(res.data.totalCount / perPage);
         setLoading(false);
@@ -1000,7 +970,7 @@ export default function AdminControls() {
         &limit=${perPage}&offset=${offset}&${parametersName}=${parameters}
         &${parametersName1}=${parameters1}`).then((res) => {
         setBlockedContentList(res?.data?.contentList);
-        setpath1(res?.data?.fullPath);
+        setPath1(res?.data?.fullPath);
         setTotalContentPages(res?.data?.totalCount / perPage);
         setLoading(false);
         deleteCSV(res?.data?.fullPath);
@@ -1100,7 +1070,7 @@ export default function AdminControls() {
         `admin/getContentList?status=published&offset=${offset}&limit=${perPage}&${parametersName}=${parameters}`
       );
       setPublishedData(data.data.contentList);
-      setpath2(data?.data?.fullPath);
+      setPath2(data?.data?.fullPath);
       setTotalPublishdContentPages(data.data.totalCount / perPage);
       setLoading(false);
       deleteCSV(data?.data?.fullPath);
@@ -4902,7 +4872,7 @@ export default function AdminControls() {
                               isChecked={true}
                               // onChange={(e) => {
                               //   curr.is_terms_accepted = e.target.checked;
-                              //   setpublicationData((prevItems) => {
+                              //   setPublicationData((prevItems) => {
                               //     const updatedItems = [...prevItems];
                               //     updatedItems[index] = curr;
                               //     return updatedItems;
@@ -4918,7 +4888,7 @@ export default function AdminControls() {
                               isChecked={curr?.checkAndApprove}
                               onChange={(e) => {
                                 curr.checkAndApprove = e.target.checked;
-                                setpublicationData((prevItems) => {
+                                setPublicationData((prevItems) => {
                                   const updatedItems = [...prevItems];
                                   updatedItems[index] = curr;
                                   return updatedItems;
@@ -4933,7 +4903,7 @@ export default function AdminControls() {
                               name="mode"
                               onChange={(e) => {
                                 curr.mode = e.target.value;
-                                setpublicationData((prevItems) => {
+                                setPublicationData((prevItems) => {
                                   const updatedItems = [...prevItems];
                                   updatedItems[index] = curr;
                                   return updatedItems;
@@ -4950,7 +4920,7 @@ export default function AdminControls() {
                               name="status"
                               onChange={(e) => {
                                 curr.status = e.target.value;
-                                setpublicationData((prevItems) => {
+                                setPublicationData((prevItems) => {
                                   const updatedItems = [...prevItems];
                                   updatedItems[index] = curr;
                                   return updatedItems;
@@ -4969,7 +4939,7 @@ export default function AdminControls() {
                                 me="10px"
                                 isChecked={curr?.isTempBlocked}
                                 onChange={(e) => {
-                                  setpublicationData((prevItems) => {
+                                  setPublicationData((prevItems) => {
                                     const updatedItems = [...prevItems];
                                     updatedItems[index].isTempBlocked =
                                       !updatedItems[index].isTempBlocked;
@@ -4993,7 +4963,7 @@ export default function AdminControls() {
                                 me="10px"
                                 isChecked={curr?.isPermanentBlocked}
                                 onChange={(e) => {
-                                  setpublicationData((prevItems) => {
+                                  setPublicationData((prevItems) => {
                                     const updatedItems = [...prevItems];
                                     updatedItems[index].isPermanentBlocked =
                                       !updatedItems[index].isPermanentBlocked;
@@ -5018,7 +4988,7 @@ export default function AdminControls() {
                               name="latestAdminRemark"
                               onChange={(e) => {
                                 curr.remarks = e.target.value;
-                                setpublicationData((prevItems) => {
+                                setPublicationData((prevItems) => {
                                   const updatedItems = [...prevItems];
                                   updatedItems[index] = curr;
 
