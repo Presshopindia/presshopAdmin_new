@@ -6,6 +6,7 @@ import dailyic from "assets/img/sorticons/day-calendar.svg";
 import weeklyic from "assets/img/sorticons/week-calendar.svg";
 import monthlyic from "assets/img/sorticons/month-calendar.svg";
 import yearlyic from "assets/img/sorticons/date.svg";
+import PropTypes from "prop-types";
 
 export default function ActionSort(props) {
   const [active, setActive] = useState()
@@ -28,9 +29,9 @@ export default function ActionSort(props) {
             className="sort_hdng"
             mb={"30px"}
           >
-            <span onClick={props?.closeSort} >
+            <button style={{background:"none", border:"none"}} onClick={props?.closeSort} >
               <img src={closeic} alt="close" className="icn" />
-            </span>
+            </button>
             <Text w="100%" textAlign="center" pr="15px" fontSize={"20px"} mb={"0px"} fontFamily={"AirbnbBold"}>
               Sort
             </Text>
@@ -110,3 +111,12 @@ export default function ActionSort(props) {
     </>
   );
 }
+
+ActionSort.propTypes = {
+  hideShow: PropTypes.shape({
+    status: PropTypes.bool.isRequired,
+  }).isRequired,
+  closeSort: PropTypes.func.isRequired,
+  sendDataToParent: PropTypes.func.isRequired,
+  handleApplySorting: PropTypes.func.isRequired,
+};

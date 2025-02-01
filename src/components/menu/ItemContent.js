@@ -2,6 +2,7 @@
 import { Icon, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { MdUpgrade } from "react-icons/md";
 import React from "react";
+import PropTypes from "prop-types";
 
 export function ItemContent(props) {
   const textColor = useColorModeValue("navy.700", "white");
@@ -39,3 +40,7 @@ export function ItemContent(props) {
     </>
   );
 }
+
+ItemContent.propTypes = {
+  info: PropTypes.string.isRequired,
+};

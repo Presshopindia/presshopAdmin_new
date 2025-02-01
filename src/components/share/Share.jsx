@@ -92,6 +92,10 @@ function Share(props) {
   );
 }
 
+SendCSVByEmail.propTypes = {
+  Url: PropTypes.string.isRequired,
+};
+
 Share.propTypes = {
   show: PropTypes.bool.isRequired,
   update: PropTypes.func.isRequired,

@@ -1,45 +1,32 @@
 /* eslint-disable */
 import React, { useContext, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useHistory } from "react-router-dom";
 // chakra imports
-import { useHistory } from "react-router-dom";
 import { useAuth } from "../../../auth-context/auth.context";
 import { Logout } from "../../../routes";
 import {
   Box,
-  Button,
-  Collapse,
   Flex,
   HStack,
-  Link,
-  Select,
   Text,
   useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
-import AuthApi from "../../../api/auth";
-import sidebareditic from "assets/img/icons/sidebaredit.svg";
-// import dataContext from "../ContextFolder/CreateContext";
-import dataContext from "views/admin/ContextFolder/Createcontext";
-
-import {
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
 } from "@chakra-ui/react";
+import dataContext from "views/admin/ContextFolder/Createcontext";
+
 // importing sidebar context to send pending msg data to sidebar
 import { useMsgContext } from "contexts/PendindMsgContext";
+import PropTypes from "prop-types";
 
 export function SidebarLinks(props) {
 
-  let { pendingChats, setPendingChats, pendingNotifications } = useMsgContext()
+  let { pendingChats, pendingNotifications } = useMsgContext()
 
-  const { profile, setProfile } = useContext(dataContext);
-  const pathname = window.location.pathname;
-
-  const { isOpen, onToggle } = useDisclosure();
+  const { profile } = useContext(dataContext);
 
   const history = useHistory();
   const { setUser } = useAuth();
@@ -62,14 +49,12 @@ export function SidebarLinks(props) {
   const { routes } = props;
 
   const activeRoute = (routeName) => {
-    // console.log(routeName,`<--------routeName`)
     return location.pathname.includes(routeName);
   };
 
-  // console.log("routes", routes)
 
-  const createLinks = (routes) => {
-    const routesar = routes.filter((curr) => {
+  const UseCreateLinks = (routes) => {
+    const routesar = routes?.filter((curr) => {
       if (!curr.hide) {
         if (
           (curr.name === "New employee registration" &&
@@ -98,24 +83,17 @@ export function SidebarLinks(props) {
           return curr.name && curr?.hide;
         }
       }
-      // return false;
-      if (curr?.name === "Dashboard") {
-        return true;
-      } else if (curr?.name === "Invoicing & payments") {
-        return true;
-      } else if (curr?.name === "Notifications") {
-        return true;
-      } else if (curr?.name === "Rating & reviews") {
-        return true;
-      } else if (curr?.name === "Manage tabs / categories") {
-        return true;
-      } else if (curr?.name === "Edit app") {
-        return true;
-      } else if (curr?.name === "Admin controls" && profile.role === "admin") {
-        return true;
-      } else if (curr?.name === "Avatars") {
-        return true;
-      } else if (curr?.name === "Payment process") {
+      if (
+        curr?.name === "Avatars" ||
+        curr?.name === "Edit app" ||
+        curr?.name === "Dashboard" ||
+        curr?.name === "Notifications" ||
+        curr?.name === "Payment process" ||
+        curr?.name === "Rating & reviews" ||
+        curr?.name === "Invoicing & payments" ||
+        curr?.name === "Manage tabs / categories" ||
+        curr?.name === "Admin controls" && profile.role === "admin"
+      ) {
         return true;
       }
     });
@@ -124,9 +102,7 @@ export function SidebarLinks(props) {
       return routesar;
     }, [window.location.pathname]);
 
-    // console.log("🚀 ~ file: Links.js:118 ~ useEffect ~ routesar:", routesar);
-
-    return routesar.map((route, index) => {
+    return routesar.map((route) => {
       if (route.category) {
         return (
           <>
@@ -141,16 +117,16 @@ export function SidebarLinks(props) {
               }}
               pt="18px"
               pb="12px"
-              key={index}
+              key={route.name}
             >
               {route.name}
             </Text>
-            {createLinks(route.items)}
+            {UseCreateLinks(route.items)}
           </>
         );
       } else if (route.path == "/app-cms") {
         return (
-          <div>
+          <div key={route.path}>
             {route.icon ? (
               <Box>
                 <HStack
@@ -203,23 +179,24 @@ export function SidebarLinks(props) {
                         <AccordionPanel pb={4}>
                           <ul className="sidebar_ul sidebar_edit_accr">
                             <li>
-                              <a
+                              <button
+                                style={{background:"none", border: "none"}}
                                 onClick={() => {
                                   history.push("/admin/app-cms");
                                 }}
                               >
                                 App
-                              </a>
+                              </button>
                             </li>
                             <li>
-                              <a
-                                fontFamily={"AirbnbMedium"}
+                              <button
+                                style={{background:"none", border: "none"}}
                                 onClick={() => {
                                   history.push("/admin/edit-marketplace");
                                 }}
                               >
                                 Marketplace
-                              </a>
+                              </button>
                             </li>
                           </ul>
                         </AccordionPanel>
@@ -273,7 +250,7 @@ export function SidebarLinks(props) {
         route.layout === "/rtl"
       ) {
         return (
-          <NavLink key={index} to={route.layout + route.path}>
+          <NavLink key={route.path} to={route.layout + route.path}>
             {route.icon ? (
               <Box position="relative">
                 {(route.name === "Notifications" || route.name === "Chat")
@@ -378,11 +355,11 @@ export function SidebarLinks(props) {
     });
   };
   const createLogout = (routes) => {
-    return routes.map((route, key) => {
+    return routes.map((route) => {
       return (
         <NavLink
           to={route.layout + route.path}
-          key={key}
+          key={route.name}
           onClick={handleLogout}
         >
           {route.icon ? (
@@ -449,10 +426,14 @@ export function SidebarLinks(props) {
   //  BRAND
   return (
     <>
-      {createLinks(routes)}
+      {UseCreateLinks(routes)}
       {createLogout(Logout)}
     </>
   );
+}
+
+SidebarLinks.propTypes = {
+  routes: PropTypes.isRequired
 }
 
 export default SidebarLinks;

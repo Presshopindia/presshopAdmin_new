@@ -155,6 +155,7 @@ AdminNavbar.propTypes = {
   fixed: PropTypes.bool, // Determines if the navbar is fixed or not
   onOpen: PropTypes.func, // Function to open the navbar menu
   message: PropTypes.string, // Message displayed when secondary navbar is active (optional)
+  logoText: PropTypes.string
 };
 
 export default AdminNavbar;

@@ -153,5 +153,6 @@ AdminNavbar.propTypes = {
   secondary: PropTypes.bool,
   fixed: PropTypes.bool,
   onOpen: PropTypes.func,
-  message: PropTypes.string
+  message: PropTypes.string,
+  logoText: PropTypes.string
 };
