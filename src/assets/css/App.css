@@ -2158,11 +2158,12 @@ select.disabled {
 }
 
 .avtr_top .top_opt .upld_lbl {
-  display: flex;
+  display: inline-flex;
   gap: 12px;
   align-items: center;
   font-size: 15px;
   line-height: 25px;
+  cursor: pointer;
 }
 
 .avtr_top .top_opt input.hidden {
@@ -5585,4 +5586,8 @@ svg.icn.cross-icon {
 
 .update_cnt .hopper-txt .css-ru2oy0 {
   margin-right: 5px;
+}
+
+.upld_lbl input[type="file"] {
+  display: none;
 }

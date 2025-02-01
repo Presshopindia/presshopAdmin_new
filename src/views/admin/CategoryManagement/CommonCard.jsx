@@ -1,15 +1,9 @@
-import { Box } from "@chakra-ui/react";
-import { React, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Flex,
   Text,
   useColorModeValue,
   Button,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
   Table,
   Tbody,
   Td,
@@ -22,21 +16,19 @@ import {
   ModalContent,
   ModalBody,
   Input,
-  useDisclosure,
-  Select,
+  useDisclosure
 } from "@chakra-ui/react";
 import Card from "components/card/Card";
-import { useHistory } from "react-router-dom";
 import writeic from "assets/img/icons/write.svg";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Post, Get, Patch, Delete } from "api/admin.services";
 import { toast } from "react-toastify";
 import Loader from "components/Loader";
+import PropTypes from "prop-types";
 
-export default function CommonCard(props) {
+function CommonCard(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isEdit, setIsEdit] = useState(false);
-  const history = useHistory();
   const type = props.type;
   const [data, setData] = useState({ type, name: "" });
   const [categoryName, setCategoryName] = useState([]);
@@ -124,6 +116,18 @@ export default function CommonCard(props) {
     getCategory();
   }, [type]);
 
+  const getTabLabel = (type) => {
+    const labels = {
+      FAQ: "FAQ tabs (App)",
+      priceTip: "Price tip's tabs",
+      tutorial: "Tutorial tabs (App)",
+      commissionstructure: "Commission structure tabs",
+      content: "Content Categories",
+      department: "Departmental categories (Marketplace)",
+    };
+  
+    return labels[type] || "Designation categories (Marketplace)";
+  };
 
   return (
     <>
@@ -149,23 +153,11 @@ export default function CommonCard(props) {
               fontSize="22px"
               fontFamily="AirbnbBold"
             >
-              {type === "FAQ"
-                ? "FAQ tabs (App)"
-                : type === "priceTip"
-                  ? "Price tip's tabs"
-                  : type === "tutorial"
-                    ? "Tutorial tabs (App)"
-                    : type === "commissionstructure"
-                      ? "Commission structure tabs"
-                      : type === "content"
-                        ? "Content Categories"
-                        : type === "department"
-                          ? "Departmental categories (Marketplace)"
-                          : "Designation categories (Marketplace)"}
+              {getTabLabel(type)}
             </Text>
 
             <div className="opt_icons_wrap">
-              <a
+              <button
                 onClick={() => {
                   onOpen();
                   setIsEdit(false);
@@ -174,7 +166,7 @@ export default function CommonCard(props) {
                 }}
                 className="txt_danger_mdm">
                 Add
-              </a>
+              </button>
             </div>
           </Flex>
 
@@ -195,13 +187,13 @@ export default function CommonCard(props) {
                       </Td>
                       <Td w="33.3%">
                         <div className="catmang_icns">
-                          <a
+                          <button
                             onClick={() => {
                               getCategoryById(value);
                             }}
                           >
                             <img className="icn" src={writeic} alt="write" />
-                          </a>
+                          </button>
                           <AiOutlineDelete
                             className="icn"
                             onClick={() => deleteCategory(value._id)}
@@ -282,3 +274,10 @@ export default function CommonCard(props) {
     </>
   );
 }
+
+CommonCard.propTypes = {
+  type: PropTypes.string.isRequired,
+  update: PropTypes.func.isRequired,
+};
+
+export default CommonCard;

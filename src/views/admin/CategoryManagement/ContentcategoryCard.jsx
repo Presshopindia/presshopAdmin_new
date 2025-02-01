@@ -1,8 +1,6 @@
 
 
-// Chakra imports
-import { InputGroup } from "@chakra-ui/react";
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import {
      Flex,
      Text,
@@ -21,17 +19,12 @@ import {
      ModalBody,
      Input,
      useDisclosure,
-     Select
+     Select,
+     InputGroup
 } from "@chakra-ui/react";
 import Card from "components/card/Card";
-// import { useHistory } from "react-router-dom";
 import writeic from "assets/img/icons/write.svg";
 import { AiOutlineDelete } from "react-icons/ai";
-// import { Post } from "api/admin.services";
-import { Get } from "api/admin.services";
-// import { toast } from "react-toastify";
-// import { Delete } from "api/admin.services";
-// import { Patch } from "api/admin.services";
 import crimeic from "assets/img/icons/crime.svg";
 import celebrityic from "assets/img/icons/celebrity.svg";
 import politicalic from "assets/img/icons/political.svg";
@@ -43,12 +36,8 @@ import { GrAttachment } from "react-icons/gr";
 const TableCard = (props) => {
      
      const { isOpen, onOpen, onClose } = useDisclosure()
-     // const [isEdit, setisEdit] = useState(false)
-     // const history = useHistory()
      const type = props.types;
-     // const [data, setData] = useState({ role: "Hopper", name: "" })
      const [getRole, SetGetRole] = useState("Hopper");
-     // const [categoryName, setCategoryName] = useState([]);
 
      const textColor = useColorModeValue("#000", "white");
 
@@ -76,9 +65,9 @@ const TableCard = (props) => {
                                    <option value='MediaHouse'>Publication</option>
                                    <option value='forAll'>For all</option>
                               </Select>
-                              <a onClick={onOpen} className="txt_danger_mdm">
+                              <button onClick={onOpen} className="txt_danger_mdm">
                                    Add
-                              </a>
+                              </button>
                          </div>
                     </Flex>
                     <TableContainer className="fix_ht_table">
@@ -100,9 +89,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -116,9 +105,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -132,9 +121,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -148,9 +137,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -164,9 +153,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -180,9 +169,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -196,9 +185,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -212,9 +201,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -228,9 +217,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -244,9 +233,9 @@ const TableCard = (props) => {
                                         <Td
                                              w='33.3%' >
                                              <div className="catmang_icns">
-                                                  <a onClick={onOpen}>
+                                                  <button onClick={onOpen}>
                                                        <img className="icn" src={writeic} alt="write" />
-                                                  </a>
+                                                  </button>
                                                   <AiOutlineDelete className="icn" />
                                              </div>
                                         </Td>
@@ -269,7 +258,7 @@ const TableCard = (props) => {
                               <div className="action_modal_body">
                                    <div className="dtl_wrap mdl_itms">
                                         <Flex className="edit_inputs_wrap" px='0px' justify='space-between' gap='20px' mb="0px" align='center'>
-                                             <div className="mdl_inp" flex={1}>
+                                             <div className="mdl_inp">
                                                   <Text mb='6px'
                                                        fontSize='13px'
                                                        fontFamily='AirbnbMedium'>
@@ -283,7 +272,7 @@ const TableCard = (props) => {
                                                        </Select>
                                                   </div>
                                              </div>
-                                             <div className="mdl_inp" flex={1}>
+                                             <div className="mdl_inp">
                                                   <Text mb='6px'
                                                        fontSize='13px'
                                                        fontFamily='AirbnbMedium'>

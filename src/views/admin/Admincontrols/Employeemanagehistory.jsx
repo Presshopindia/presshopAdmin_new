@@ -11,50 +11,20 @@ import {
   Tr,
   useColorModeValue,
   Select,
-  Textarea,
   TableContainer,
-  Checkbox,
-  Button,
-  Progress,
+  Checkbox
 } from "@chakra-ui/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "components/card/Card";
-import { BsArrowLeft, BsEye } from "react-icons/bs";
-import camera from "assets/img/icons/camera.svg";
-import crown from "assets/img/icons/crown.png";
+import { BsArrowLeft } from "react-icons/bs";
 import share from "assets/img/icons/share.png";
-import video from "assets/img/icons/video.svg";
 import watch from "assets/img/icons/watch.svg";
 import calendar from "assets/img/icons/calendar.svg";
 import print from "assets/img/icons/print.png";
-import { useHistory, useParams } from "react-router-dom";
-import { Tooltip } from '@chakra-ui/react';
-import avt1 from "assets/img/avatars/avt1.png";
-import avt2 from "assets/img/avatars/avt2.png";
-import avt3 from "assets/img/avatars/avt3.png";
-import avt4 from "assets/img/avatars/avt4.png";
-import monitor from "assets/img/icons/monitor.svg";
-import mobile from "assets/img/icons/mobile.svg";
-import mail from "assets/img/icons/mail.svg";
-import pro from "assets/img/icons/pro.svg";
+import { useParams } from "react-router-dom";
 import idic from "assets/img/icons/id.svg";
-import shared from "assets/img/icons/shared.svg";
-import img1 from "assets/img/nfts/Nft4.png";
-import img2 from "assets/img/avatars/avatar2.png";
-import img3 from "assets/img/nfts/Nft2.png";
-import docuploaded from "assets/img/icons/img-upld.svg";
-import write from "assets/img/icons/write.svg";
-import { BsArrowRight } from "react-icons/bs";
-import interview from "assets/img/icons/interview.svg";
-import amt from "assets/img/icons/ametuer.svg";
 import { Get } from "api/admin.services";
-import { toast } from "react-toastify";
-import { Patch } from "api/admin.services";
 import moment from "moment/moment";
-import { Post } from "api/admin.services";
-import dataContext from "../ContextFolder/Createcontext";
-import { async } from "@firebase/util";
-import { RiTextDirectionL } from "react-icons/ri";
 import ReactPaginate from "react-paginate";
 import Loader from "components/Loader";
 import Share from "components/share/Share";
@@ -62,13 +32,12 @@ import SortFilterDashboard from "components/sortfilters/SortFilterDashboard";
 
 export default function AdminControls() {
   const textColor = useColorModeValue("#000", "white");
-  const history = useHistory()
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const perPage = 5;
   const [loading, setLoading] = useState(false);
   const { id, component } = useParams();
-  const [EmployeeData, setEmployeeData] = useState([]);
+  const [employeeData, setEmployeeData] = useState([]);
   const [path, setPath] = useState("");
   const [csv, setCsv] = useState("");
   const [show, setShow] = useState(false);
@@ -156,10 +125,10 @@ export default function AdminControls() {
         </div>
 
         <div className="back_link">
-          <a onClick={() => { window.history.back() }}>
+          <button onClick={() => { window.history.back() }}>
             <BsArrowLeft />
             <span>Back</span>
-          </a>
+          </button>
         </div>
 
         <Card className="tab_card"
@@ -178,23 +147,25 @@ export default function AdminControls() {
                 Employee control history
               </Text>
               <div className="opt_icons_wrap">
-                <a
+                <button
                   onClick={() => {
                     setShow(true)
                     setCsv(path)
                   }}
                   className="txt_danger_mdm"
                 >
-                  <img src={share} className="opt_icons" />
-                </a>
-                <span onClick={() => printTable(id, currentPage)}><img src={print} className="opt_icons" /></span>
+                  <img src={share} alt="Share" className="opt_icons" />
+                </button>
+                <button onClick={() => printTable(id, currentPage)}>
+                  <img src={print} className="opt_icons" alt="Share" />
+                </button>
                 <div className="fltr_btn">
                   <Text fontSize={"15px"}>
-                    <span onClick={() => setHideShow((prevHideShow) => ({
+                    <button onClick={() => setHideShow((prevHideShow) => ({
                       ...prevHideShow,
                       status: true,
                       type: "employeeHistory"
-                    }))}>Sort</span>
+                    }))}>Sort</button>
                   </Text>
                   {hideShow.type === "employeeHistory" &&
                     <SortFilterDashboard hideShow={hideShow}
@@ -226,12 +197,12 @@ export default function AdminControls() {
                 <Tbody>
 
                   {
-                    EmployeeData && EmployeeData.map((curr) => {
+                    employeeData?.map((curr) => {
                       return (
                         <Tr key={curr?._id}>
                           <Td className="timedate_wrap">
-                            <p className="timedate"><img src={watch} className="icn_time" />{moment(curr.createdAt).format('hh:mm A')}</p>
-                            <p className="timedate"><img src={calendar} className="icn_time" />{moment(curr.createdAt).format('DD MM YYYY')}</p>
+                            <p className="timedate"><img alt="Watch" src={watch} className="icn_time" />{moment(curr.createdAt).format('hh:mm A')}</p>
+                            <p className="timedate"><img alt="Calendar" src={calendar} className="icn_time" />{moment(curr.createdAt).format('DD MM YYYY')}</p>
                           </Td>
                           <Td>
                             <span>{curr?.admin_id?.name}</span>
