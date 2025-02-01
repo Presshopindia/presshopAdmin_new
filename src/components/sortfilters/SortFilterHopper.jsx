@@ -12,11 +12,8 @@ import soldic from "../../assets/img/sorticons/sold.svg";
 import unsoldic from "../../assets/img/sorticons/unsold.svg";
 import publishedic from "../../assets/img/sorticons/published-content.svg";
 import pendingic from "../../assets/img/sorticons/pending-content.svg";
-import rejectedic from "../../assets/img/sorticons/rejected-content.svg";
 import paymentic from "../../assets/img/sorticons/payment.svg";
-import invic from "../../assets/img/sorticons/invoice.svg";
 import srchic from "../../assets/img/sorticons/Search.svg";
-import trnsic from "../../assets/img/sorticons/transaction.svg";
 import actionic from "../../assets/img/sorticons/action.svg";
 import hopperic from "../../assets/img/sorticons/user.svg";
 import staric from "../../assets/img/sorticons/star.svg";
@@ -29,8 +26,9 @@ import typeic from "../../assets/img/sorticons/type.svg";
 import Pendingdocic from "../../assets/img/sorticons/penidng-doc.svg";
 import classic from "../../assets/img/sorticons/class.svg";
 import { Get } from "api/admin.services";
+import PropTypes from "prop-types";
 
-export default function SortFilterHopper(props) {
+function SortFilterHopper(props) {
   const [categoryName, setCategoryName] = useState([])
 
   const [active, setActive] = useState()
@@ -89,7 +87,7 @@ export default function SortFilterHopper(props) {
             <Text fontSize={"20px"} mb={"0px"} fontFamily={"AirbnbBold"}>
               Sort and Filter
             </Text>
-            <a className="link">Clear all</a>
+            <button className="link">Clear all</button>
           </Flex>
           <Flex mb={"30px"} direction={"column"} gap={"10px"}>
             <Text fontSize={"20px"} fontFamily={"AirbnbMedium"}>
@@ -706,7 +704,7 @@ export default function SortFilterHopper(props) {
               </Flex>
               <Flex gap="8px" flexWrap="wrap" flex="2" justifyContent="end">
                 {
-                  categoryName && categoryName.map((curr) => {
+                  categoryName?.map((curr) => {
                     return (
                       <div className="fltr_actn" key={curr?._id}>
 
@@ -742,22 +740,12 @@ export default function SortFilterHopper(props) {
                   >Videos</Text>
                   <img src={closeic} alt="cross" />
                 </div>
-                {/* <div className="fltr_actn active">
-                  <Text>Scans</Text>
-                  <img src={closeic} alt="cross" />
-                </div> */}
                 <div className="fltr_actn active">
                   <Text
                     onClick={(e) => { handleSortClick('Interviews', 'Interviews') }}
                   >Interviews</Text>
                   <img src={closeic} alt="cross" />
                 </div>
-                {/* <div className="fltr_actn active">
-                  <Text
-                  
-                  >Recordings</Text>
-                  <img src={closeic} alt="cross" />
-                </div> */}
               </Flex>
             </Flex>
 
@@ -767,7 +755,18 @@ export default function SortFilterHopper(props) {
 
           </Flex>
         </div>}
-      {/* Loader end */}
     </>
   );
 }
+
+SortFilterHopper.propTypes = {
+  hideShow: PropTypes.shape({
+    status: PropTypes.bool,
+  }),
+  closeSort: PropTypes.func,
+  sendDataToParent: PropTypes.func.isRequired,
+  sendDataToParent1: PropTypes.func.isRequired,
+  handleApplySorting: PropTypes.func.isRequired
+};
+
+export default SortFilterHopper

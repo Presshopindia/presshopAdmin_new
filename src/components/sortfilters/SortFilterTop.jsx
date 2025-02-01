@@ -1,11 +1,12 @@
 // Chakra imports
 import React, { useState } from "react";
-import { Button, Flex, Text, Select, Input } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import closeic from "../../assets/img/sorticons/close.svg";
 import dailyic from "assets/img/sorticons/day-calendar.svg";
 import weeklyic from "assets/img/sorticons/week-calendar.svg";
 import monthlyic from "assets/img/sorticons/month-calendar.svg";
 import yearlyic from "assets/img/sorticons/date.svg";
+import PropTypes from "prop-types";
 
 export default function SortFilterTop(props) {
   const [active, setActive] = useState({
@@ -32,17 +33,14 @@ export default function SortFilterTop(props) {
             className="sort_hdng"
             mb={"30px"}
           >
-            <span onClick={props?.closeSort} >
+            <button style={{border:"none", background:"none"}} onClick={props?.closeSort} >
               <img src={closeic} alt="close" className="icn" />
-            </span>
+            </button>
             <Text w="100%" textAlign="center" pr="15px" fontSize={"20px"} mb={"0px"} fontFamily={"AirbnbBold"}>
               Sort
             </Text>
           </Flex>
           <Flex mb={"30px"} direction={"column"} gap={"10px"}>
-            {/* <Text fontSize={"20px"} fontFamily={"AirbnbMedium"}>
-              Sort
-            </Text> */}
             <Flex
               className={`fltr_itm ${active.daily}`}
               p={"6px 9px"}
@@ -139,3 +137,13 @@ export default function SortFilterTop(props) {
     </>
   );
 }
+
+SortFilterTop.propTypes = {
+  hideShow: PropTypes.shape({
+    status: PropTypes.bool,
+    type: PropTypes.isRequired,
+  }),
+  closeSort: PropTypes.func,
+  sendDataToParent: PropTypes.func.isRequired,
+  handleApplySorting: PropTypes.func.isRequired
+};

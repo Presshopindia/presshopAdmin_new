@@ -20,7 +20,6 @@ import trnsic from "../../assets/img/sorticons/transaction.svg";
 import hopperic from "../../assets/img/sorticons/user.svg";
 import staric from "../../assets/img/sorticons/star.svg";
 import calendaric from "../../assets/img/sorticons/date.svg";
-import locationic from "../../assets/img/sorticons/location.svg";
 import employeeic from "../../assets/img/sorticons/employee.svg";
 import licenceic from "../../assets/img/sorticons/licence.svg";
 import categoryic from "../../assets/img/sorticons/category.svg";
@@ -119,7 +118,6 @@ function SortFilterDashboard(props) {
   const invoiceNumber = ["Live published content", "Live uploaded content", "Live tasks", "contentOnboarding", "publicationControl"]
   const transactionId = ["Live published content", "Live uploaded content", "Live tasks", "contentOnboarding", "publicationControl"]
 
-  const location = []
   const employee = ["Live published content", "Live uploaded content", "Live tasks", "contentOnboarding", "publicationControl"]
   const licence = ["Live tasks", "Live uploaded content", "publicationControl"]
 
@@ -670,79 +668,21 @@ function SortFilterDashboard(props) {
               </Text>
             </Flex>
             <Flex gap="8px" flexWrap="wrap" flex="2" justifyContent="end">
-              <div className="fltr_actn"
+              <button className="fltr_actn"
                 onClick={() => handleSortClick('Action', "Temporaryblocked")}
               >
                 <Text>Temporary blocked</Text>
                 <img src={closeic} alt="cross" />
-              </div>
-              <div className="fltr_actn active"
+              </button>
+              <button className="fltr_actn active"
                 onClick={() => handleSortClick('Action', "Permanentblocked")}
               >
                 <Text>Permanent blocked</Text>
                 <img src={closeic} alt="cross" />
-              </div>
+              </button>
             </Flex>
           </Flex>
         }
-        {/* <Flex
-      className={`srch_fltr_wrap fltr_itm ${active1 === "Publication_search" ? "active" : ""}`}
-      w="100%"
-      p={"6px 9px"}
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Flex gap={"15px"} alignItems={"center"}>
-        <img src={staric} alt="Publication" className="icn" />
-        <Text className="fltr_txt" mb={"0px"} fontFamily={"Airbnb"}>
-          Publication
-        </Text>
-      </Flex>
-      <div className="fltr_srch">
-        <img src={srchic} className="srch_icn" alt="" />
-        <input type="text" placeholder="Search" className="srch_inp"
-          onChange={(e) => handleSortClick("Publication_search", e.target.value)}
-        />
-      </div>
-    </Flex> */}
-
-        <Flex
-          className="price_fltr_wrap fltr_itm"
-          w="100%"
-          p={"6px 9px"}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          {/* <Flex gap={"15px"} alignItems={"center"}>
-        <img src={paymentic} alt="Price" className="icn" />
-        <Text
-          className="fltr_txt"
-          mb={"0px"}
-          fontSize="15px"
-          fontFamily={"Airbnb"}
-        >
-          Price
-        </Text>
-      </Flex> */}
-
-          <Flex gap="8px">
-            <div className="select_wrap">
-              {/* <Select placeholder="Sort">
-            <option value="option2" selected>
-              From
-            </option>
-          </Select> */}
-            </div>
-            <div className="select_wrap">
-              {/* <Select placeholder="Sort">
-            <option value="option2" selected>
-              To
-            </option>
-          </Select> */}
-
-            </div>
-          </Flex>
-        </Flex>
         <Flex
           className="action_fltr_wrap fltr_itm"
           w="100%"
@@ -792,31 +732,6 @@ function SortFilterDashboard(props) {
             </div>
           </Flex>
         </Flex>
-        {
-          !location.includes(props?.hideShow?.type) &&
-          <Flex
-            className="srch_fltr_wrap fltr_itm"
-            w="100%"
-            p={"6px 9px"}
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Flex gap={"15px"} alignItems={"center"} className="fil">
-              <img src={locationic} alt="Location" className="icn" />
-              <Text className="fltr_txt " mb={"0px"} fontFamily={"Airbnb"}>
-                Location
-              </Text>
-            </Flex>
-            <div className="fltr_srch">
-              <img src={srchic} className="srch_icn" alt="" />
-              <input type="text" placeholder="Search" className="srch_inp"
-                value={query2?.key === "search" ? query2?.value : ""}
-                onChange={(e) => { handleSortClick1('search', e.target.value) }}
-              />
-            </div>
-          </Flex>
-        }
-
         {
           !employee.includes(props?.hideShow?.type) &&
           <Flex
