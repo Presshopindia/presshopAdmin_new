@@ -1,0 +1,22 @@
+{
+  "projects": {
+    "default": "presshop-admin",
+    "development": "presshop-admin",
+    "admin": "presshop-admin",
+    "presshop-admin": "presshop-admin",
+    "presshop": "presshop-admin",
+    "p": "presshop-admin",
+    "d": "presshop-admin",
+    "presadmin": "presshop-admin",
+    "press": "presshop-admin",
+    "pressho": "presshop-admin",
+    "presshopadmin": "presshop-admin",
+    "staging-admin": "presshop-admin",
+    "staging": "presshop-admin",
+    "admin]": "presshop-admin",
+    "sudo firebase deploy": "presshop-admin",
+    "mediahouse": "presshop-mediahouse"
+  },
+  "targets": {},
+  "etags": {}
+}
