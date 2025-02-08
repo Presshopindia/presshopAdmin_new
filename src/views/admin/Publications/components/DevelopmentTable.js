@@ -25,10 +25,11 @@ import {
   useTable,
 } from "react-table";
 import { useHistory } from "react-router-dom";
+import { BsEye } from "react-icons/bs";
 import mobile from "assets/img/icons/mobile.svg";
 import watch from "assets/img/icons/watch.svg";
 import calendar from "assets/img/icons/calendar.svg";
-import { BsArrowLeft, BsEye } from "react-icons/bs";
+import { BsArrowLeft } from "react-icons/bs";
 import share from "assets/img/icons/share.png";
 import print from "assets/img/icons/print.png";
 import monitor from "assets/img/icons/monitor.svg";
@@ -425,8 +426,7 @@ export default function DevelopmentTable(props) {
               fontFamily={"AirbnbBold"}
               lineHeight="100%"
             >
-              Publication control
-            </Text>
+              Publication control   </Text>
             <div className="opt_icons_wrap">
               <a
                 onClick={() => {
@@ -503,6 +503,9 @@ export default function DevelopmentTable(props) {
               <Tbody>
                 {publicationData &&
                   publicationData.map((curr, index) => {
+                    if (index == 0) {
+                      console.log("all chat content ----> ", curr)
+                    }
                     return (
                       <Tr key={curr._id}>
                         <Td className="item_detail">
@@ -568,11 +571,8 @@ export default function DevelopmentTable(props) {
                           <br />
                           {curr?.admin_detail?.email}
                         </Td>
-                        <Td>{curr?.mediaHouse_user}</Td>
+                        <Td>{curr?.mediaHouse_user ? curr?.mediaHouse_user : 0}<BsEye className="icn_time" />View</Td>
                         <Td className="item_detail address_details">
-
-
-
                           {curr?.upload_docs?.documents ? (
                             curr?.upload_docs?.documents.map((value) => (
                               <img src={docuploaded} className='doc_uploaded' alt="document uploaded" onClick={() => { window.open(value?.url, '_blank') }} />
@@ -775,7 +775,7 @@ export default function DevelopmentTable(props) {
             forcePage={currentPage1 - 1}
           />
         </div>
-      </Card>
+      </Card >
 
       <Card
         direction="column"

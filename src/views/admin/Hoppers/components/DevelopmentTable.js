@@ -548,7 +548,7 @@ export default function DevelopmentTable(props) {
             fontSize='22px'
             lineHeight='100%'
             fontFamily={"AirbnbBold"}>
-            Hopper controls
+            Hopper controls check
           </Text>
           <div className="opt_icons_wrap">
             <a
@@ -593,10 +593,10 @@ export default function DevelopmentTable(props) {
             <Thead>
               <Tr>
                 <Th>Hopper details</Th>
-
+                <Th>Time & Date</Th>
                 <Th className="adr_dtl">Address</Th>
                 <Th>Contact details</Th>
-                <Th>Category</Th>
+                <Th>Class</Th>
                 <Th>Ratings</Th>
                 <Th>Uploaded docs</Th>
                 <Th>Banking details</Th>
@@ -604,7 +604,7 @@ export default function DevelopmentTable(props) {
                 <Th>Check & approve</Th>
                 <Th>Mode</Th>
                 <Th>Status</Th>
-                <Th className="actn_blck">Action</Th>
+                <Th className="actn_blck">Action taken</Th>
                 <Th>Remarks</Th>
                 <Th>User details</Th>
                 <Th>CTA</Th>
@@ -621,7 +621,18 @@ export default function DevelopmentTable(props) {
                       <Text className="nameimg naming_comn"><span className="txt_mdm">{`${curr.first_name} ${curr.last_name}`}</span><br />
                         <span >({curr?.user_name})</span></Text>
                     </Td>
-
+                    {/* <Td className="address_wrap">{moment(curr.createdAt).}</Td>
+                     */}
+                    <Td className="timedate_wrap">
+                      <p className="timedate">
+                        <img src={watch} className="icn_time" />
+                        {moment(curr.createdAt).format("hh:mm A")}
+                      </p>
+                      <p className="timedate">
+                        <img src={calendar} className="icn_time" />
+                        {moment(curr.createdAt).format("DD MMM YYYY")}
+                      </p>
+                    </Td>
                     <Td className="address_wrap">{curr.address}</Td>
                     <Td className="contact_details">
                       <div className="mobile detail_itm">
@@ -1428,7 +1439,9 @@ export default function DevelopmentTable(props) {
                 <Th>Uploaded content (Value)</Th>
                 <Th>Total amount paid</Th>
                 <Th>Total amount payable</Th>
+                <Th>Payment due date</Th>
                 <Th>Total presshop commission</Th>
+                <Th>Total proccessing charge</Th>
                 <Th>Mode</Th>
                 <Th>Remarks</Th>
                 <Th>Employee details</Th>
@@ -1463,7 +1476,14 @@ export default function DevelopmentTable(props) {
                     <Td>
                       &pound; {curr?.total_amount_payable ?? "0"}
                     </Td>
+                    <Td>
+                      not available
+                      {/* &pound; {curr?.total_amount_payable ?? "0"} */}
+                    </Td>
 
+                    <Td className="txt_wrap">
+                      <p>&pound;{curr?.total_presshop_commission ?? "0"}</p>
+                    </Td>
                     <Td className="txt_wrap">
                       <p>&pound;{curr?.total_presshop_commission ?? "0"}</p>
                     </Td>

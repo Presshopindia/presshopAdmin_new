@@ -787,7 +787,7 @@ export default function Invoicingandpayments() {
                 fontFamily={"AirbnbBold"}
                 lineHeight="100%"
               >
-                Invoicing transactions
+                Invoicing transactions check
               </Text>
               <div className="opt_icons_wrap">
                 <a
@@ -842,7 +842,7 @@ export default function Invoicingandpayments() {
                     <Th>Publication</Th>
                     <Th>Invoice date</Th>
                     <Th>Amount invoiced</Th>
-                    <Th>VAT invoiced</Th>
+                    <Th>VAT received</Th>
                     <Th>Invoice number</Th>
                     <Th>Transaction ID</Th>
                     <Th>Amount received</Th>
@@ -939,7 +939,7 @@ export default function Invoicingandpayments() {
                           <Td className="timedate_wrap">
                             <p className="timedate">
                               <img src={calendar} className="icn_time" />
-                              {moment(curr?.createdAt)?.format(`DD MMMM YYYY`)}
+                              {moment(curr?.createdAt)?.format(`DD MMM YYYY`)}
                             </p>
                           </Td>
                           <Td></Td>
@@ -949,7 +949,7 @@ export default function Invoicingandpayments() {
                               curr?.media_house_id?.company_bank_details
                                 ?.bank_name
                             }
-                            <br /> Sort Code -
+                            <br /> Sort Code -{" "}
                             {
                               curr?.media_house_id?.company_bank_details
                                 ?.sort_code

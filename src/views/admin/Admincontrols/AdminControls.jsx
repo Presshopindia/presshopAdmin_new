@@ -1096,7 +1096,7 @@ export default function AdminControls() {
             <Table mx="20px" variant="simple" className="common_table">
               <Thead>
                 <Tr>
-                  <Th>Posted content</Th>
+                  <Th>Published content</Th>
                   <Th>Time & date</Th>
                   <Th>Location</Th>
                   <Th>Heading</Th>
@@ -1110,7 +1110,7 @@ export default function AdminControls() {
                   <Th>Sale price</Th>
                   <Th>Hopper price</Th>
                   <Th>Published price</Th>
-                  <Th>Posted by</Th>
+                  <Th>Published by</Th>
                   <Th className="width_th_comn">1st level check</Th>
                   <Th className="width_th_comn">2nd level check details</Th>
                   <Th className="width_th_comn">Time & date</Th>
@@ -1121,7 +1121,7 @@ export default function AdminControls() {
                   <Th>Status</Th>
                   <Th>Remarks</Th>
                   <Th>Employee details</Th>
-                  <Th>CTA</Th>
+                  <Th>Action</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -1690,6 +1690,7 @@ export default function AdminControls() {
                         {(profile?.subadmin_rights?.viewRightOnly &&
                           profile?.subadmin_rights?.controlContent) ||
                           profile?.subadmin_rights?.controlContent ? (
+<<<<<<< Updated upstream
                           <Button
                             className="theme_btn tbl_btn"
                             onClick={() => updateContent(index)}
@@ -1709,6 +1710,34 @@ export default function AdminControls() {
                     </Tr>
                   );
                 })}
+=======
+                            <Button
+                              className="theme_btn tbl_btn"
+                              onClick={() => updateContent(index)}
+                            >
+                              Save
+                            </Button>
+                          ) : (
+                            <Button
+                              className="theme_btn tbl_btn"
+                              onClick={() => updateContent(index)}
+                              disabled
+                            >
+                              Save
+                            </Button>
+                          )}
+                          <Button
+                            className="theme_btn tbl_btn mt-5 bg-secondary"
+                            // onClick={() => updateContent(index)}
+                            // disabled
+                          >
+                            Edit
+                          </Button>
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+>>>>>>> Stashed changes
               </Tbody>
             </Table>
           </TableContainer>
@@ -1825,19 +1854,23 @@ export default function AdminControls() {
                   <Th>Location</Th>
                   <Th>Heading</Th>
                   <Th>Description</Th>
+                  <Th>Hashtags</Th>
                   <Th>Voice note</Th>
                   <Th>Type</Th>
                   <Th>Licence</Th>
                   <Th>Category</Th>
                   <Th>Volume</Th>
-                  <Th>Price</Th>
-                  <Th>Posted by</Th>
+                  <Th>Hopper price</Th>
+                  <Th>Published price</Th>
+                  <Th>Sale price</Th>
+                  <Th>Published by</Th>
                   <Th className="width_th_comn">1st level check</Th>
-                  <Th className="width_th_comn">2nd level check & call</Th>
+                  <Th className="width_th_comn">2nd level check details</Th>
                   <Th className="width_th_comn">Call time & date</Th>
                   <Th className="check_th">Check & approve</Th>
                   <Th>Mode</Th>
                   <Th>Status</Th>
+                  <Th>Shared after 24hrs</Th>
                   <Th>Remarks</Th>
                   <Th>Employee details</Th>
                   <Th>CTA</Th>
@@ -1884,6 +1917,7 @@ export default function AdminControls() {
                           />
                         </Td>
                         <Td>
+<<<<<<< Updated upstream
                           <Link to={`/admin/live-published-content/${value._id}/Manage content`}>
                           {
                             value?.content.length === 0 ? (
@@ -1898,11 +1932,104 @@ export default function AdminControls() {
                                     <span className="arrow_span">
                                       <BsArrowRight />
                                     </span>
+=======
+                          <a
+                            onClick={() =>
+                              history.push(
+                                `/admin/live-published-content/${value._id}/Manage content`
+                              )
+                            }
+                          >
+                            {value?.content && value?.content?.length === 1 ? (
+                              value?.content[0].media_type === "image" ? (
+                                <img
+                                  // src={process.env.REACT_APP_CONTENT + value?.content[0]?.media}
+                                  src={value?.content[0]?.watermark}
+                                  className="content_img"
+                                  alt="Content thumbnail"
+                                />
+                              ) : value?.content[0].media_type === "audio" ? (
+                                <span>
+                                  <img
+                                    src={interview}
+                                    alt="Content thumbnail"
+                                    className="icn m_auto"
+                                  />
+                                </span>
+                              ) : value?.content[0].media_type === "video" ? (
+                                <img
+                                  src={
+                                    process.env.REACT_APP_CONTENT +
+                                    value?.content[0]?.thumbnail
+                                  }
+                                  className="content_img"
+                                  alt="Content thumbnail"
+                                />
+                              ) : value?.content[0].media_type === "doc" ? (
+                                <img
+                                  src={docic}
+                                  className="content_img"
+                                  alt="Content thumbnail"
+                                />
+                              ) : value?.content[0].media_type === "pdf" ? (
+                                <img
+                                  src={pdfic}
+                                  className="content_img"
+                                  alt="Content thumbnail"
+                                />
+                              ) : null
+                            ) : value?.content?.length === 0 ? (
+                              "no content"
+                            ) : (
+                              value?.content?.length > 1 && (
+                                <div className="content_imgs_wrap contnt_lngth_wrp">
+                                  <div className="content_imgs">
+                                    {value?.content.slice(0, 3).map((value) => (
+                                      <>
+                                        {value.media_type === "image" ? (
+                                          <img
+                                            // src={process.env.REACT_APP_CONTENT + value.media}
+                                            src={value?.watermark}
+                                            className="content_img"
+                                            alt="Content thumbnail"
+                                          />
+                                        ) : value.media_type === "audio" ? (
+                                          <span>
+                                            <img
+                                              src={interview}
+                                              alt="Content thumbnail"
+                                              className="icn m_auto"
+                                            />
+                                          </span>
+                                        ) : value.media_type === "audio" ? (
+                                          <img
+                                            src={
+                                              process.env.REACT_APP_CONTENT +
+                                              value.thumbnail
+                                            }
+                                            className="content_img"
+                                            alt="Content thumbnail"
+                                          />
+                                        ) : value.media_type === "doc" ? (
+                                          <img
+                                            src={docic}
+                                            className="content_img"
+                                            alt="Content thumbnail"
+                                          />
+                                        ) : value.media_type === "pdf" ? (
+                                          <img
+                                            src={pdfic}
+                                            className="content_img"
+                                            alt="Content thumbnail"
+                                          />
+                                        ) : null}
+                                      </>
+                                    ))}
+>>>>>>> Stashed changes
                                   </div>
                             )}
                           </Link>
                         </Td>
-
                         <Td className="timedate_wrap">
                           <p className="timedate">
                             <img src={watch} className="icn_time" alt="Date and time" />
@@ -1961,7 +2088,14 @@ export default function AdminControls() {
                           />
                           <img className="icn_edit" src={write} alt="Edit"/>
                         </Td>
-
+                        <Td className="remarks_wrap remarks_wrap_edit">
+                          <TagSelect
+                            setPublishedData={setContentList}
+                            curr={value}
+                            index={index}
+                            write={write}
+                          />
+                        </Td>{" "}
                         <Td>
                           {value?.audio_description && (
                             <audio controls>
@@ -2098,6 +2232,10 @@ export default function AdminControls() {
                           <p>{Pdf && Pdf?.length > 0 && Pdf?.length}</p>
                         </Td>
                         <Td>
+                          £{formatAmountInMillion(value.original_ask_price)}
+                        </Td>
+                        <Td>£{formatAmountInMillion(value.ask_price)}</Td>
+                        <Td>
                           <Flex alignItems="center" gap="4px">
                             £ <input
                               type="number"
@@ -2165,6 +2303,15 @@ export default function AdminControls() {
                               content_id={value._id}
                               isChecked={value.firstLevelCheck?.isAdult}
                               onChange={(e) => {
+<<<<<<< Updated upstream
+=======
+                                // if(e.target.checked==true){
+                                //   // console.log('sdhhhhhhhhhhhhhhhjhv')
+                                //   setAdult[index](true)
+                                // }else{
+                                //   setAdult[index](false)
+                                // }
+>>>>>>> Stashed changes
                                 value.firstLevelCheck.isAdult =
                                   e.target.checked;
                                 setContentList((prevItems) => {
@@ -2222,7 +2369,6 @@ export default function AdminControls() {
                             <span>Deep fake check</span>
                           </div>
                         </Td>
-
                         <Td className="remarks_wrap">
                           <Textarea
                             placeholder="Enter details of call..."
@@ -2305,7 +2451,6 @@ export default function AdminControls() {
                             <option value="email">Email</option>
                           </Select>
                         </Td>
-
                         <Td className="big_select_wrap">
                           <Select
                             value={value.status}
@@ -2336,6 +2481,34 @@ export default function AdminControls() {
                             ) : null}
                           </Select>
                         </Td>
+                        {/* <Td>shared 24hrs</Td> */}
+                        <Td className="select_wrap">
+                          {!(value.type == "shared") ? (
+                            <Select
+                              // value={value?.donot_share ? value?.donot_share.toString(): ""}
+                              value={value.donot_share.toString() ?? ""}
+                              content_id={value._id}
+                              isDisabled={
+                                profile?.subadmin_rights?.viewRightOnly &&
+                                !profile?.subadmin_rights?.controlContent
+                              }
+                              onChange={(e) => {
+                                value.donot_share = e.target.value;
+                                setContentList((pre) => {
+                                  const updatedItems = [...pre];
+                                  updatedItems[index] = value;
+                                  return updatedItems;
+                                });
+                              }}
+                            >
+                              <option value="">Select here</option>
+                              <option value="true">Shared</option>
+                              <option value="false">Donot share</option>
+                            </Select>
+                          ) : (
+                            "NA"
+                          )}
+                        </Td>
                         <Td className="remarks_wrap">
                           <Textarea
                             placeholder="Enter remarks if any..."
@@ -2356,7 +2529,6 @@ export default function AdminControls() {
                             }}
                           />
                         </Td>
-
                         <Td className="timedate_wrap">
                           <p className="timedate">
                             {value?.admin_details?.name}
@@ -2496,22 +2668,27 @@ export default function AdminControls() {
                     <Th>Location</Th>
                     <Th>Heading</Th>
                     <Th>Description</Th>
+                    <Th>Hashtags</Th>
                     <Th>Voice note</Th>
                     <Th>Type</Th>
                     <Th>License</Th>
                     <Th>Category</Th>
                     <Th>Volume</Th>
                     <Th>Asking price</Th>
+                    <Th>Hopper price</Th>
+                    <Th>Published price</Th>
                     <Th>Sale price</Th>
                     {/* <Th>Published by</Th> */}
                     <Th>Sale status</Th>
                     <Th>Amount received</Th>
+                    <Th>Amount receivable</Th>
                     <Th>Presshop commission</Th>
+                    <Th>Processing charges</Th>
                     <Th>Amount paid</Th>
                     <Th>Amount payable</Th>
                     <Th className="rcvd_comn_th">Received From</Th>
                     <Th>Published by</Th>
-                    <Th>Mode</Th>
+                    {/* <Th>Mode</Th> */}
                     <Th>Remarks</Th>
                     <Th>Employee details</Th>
                     <Th>CTA</Th>
@@ -2525,6 +2702,10 @@ export default function AdminControls() {
                     ) */}
                   {publishedData &&
                     publishedData?.map((curr, index) => {
+                      const stripeFee = curr.Vat[0]
+                        ? curr.Vat[0].stripe_fee
+                        : 0;
+                      const vatCharge = curr.Vat[0] ? curr.Vat[0].Vat : 0;
                       const audio = curr.content.filter(
                         (curr) => curr.media_type === "audio"
                       );
@@ -2538,12 +2719,61 @@ export default function AdminControls() {
                       return (
                         <Tr key={curr._id}>
                           <Td>
+<<<<<<< Updated upstream
                             <Link to={`/admin/live-published-content/${curr._id}/Manage content`}>
                               {
                             curr?.content.length === 0 ? (
                               "no content"
                             ) : (
                               <div className="content_imgs_wrap contnt_lngth_wrp">
+=======
+                            <a
+                              onClick={() => {
+                                history.push(
+                                  `/admin/live-published-content/${curr._id}/Manage content`
+                                );
+                              }}
+                            >
+                              {curr?.content?.length === 1 ? (
+                                curr?.content[0].media_type === "image" ? (
+                                  <img
+                                    // src={process.env.REACT_APP_CONTENT + curr?.content[0]?.media}
+                                    src={curr?.content[0]?.watermark}
+                                    className="content_img"
+                                    alt="Content thumbnail"
+                                  />
+                                ) : curr?.content[0].media_type === "audio" ? (
+                                  <img
+                                    src={interview}
+                                    alt="Content thumbnail"
+                                    className="icn m_auto"
+                                  />
+                                ) : curr?.content[0].media_type === "video" ? (
+                                  <img
+                                    // src={process.env.REACT_APP_CONTENT + curr?.content[0]?.thumbnail}
+                                    src={curr?.content[0]?.watermark}
+                                    className="content_img"
+                                    alt="Content thumbnail"
+                                  />
+                                ) : curr?.content[0].media_type === "doc" ? (
+                                  <img
+                                    // src={process.env.REACT_APP_CONTENT + curr?.content[0]?.thumbnail}
+                                    src={docic}
+                                    className="icn m_auto"
+                                    alt="Content thumbnail"
+                                  />
+                                ) : curr?.content[0].media_type === "pdf" ? (
+                                  <img
+                                    // src={process.env.REACT_APP_CONTENT + curr?.content[0]?.thumbnail}
+                                    src={pdfic}
+                                    className="icn m_auto"
+                                    alt="Content thumbnail"
+                                  />
+                                ) : null
+                              ) : curr?.content?.length === 0 ? null : (
+                                curr?.content?.length > 1 && (
+                                  <div className="content_imgs_wrap contnt_lngth_wrp">
+>>>>>>> Stashed changes
                                     <div className="content_imgs">
                                       {curr?.content
                                           .slice(0, 3)
@@ -2613,7 +2843,15 @@ export default function AdminControls() {
                             />
                             <img alt="edit" className="icn_edit" src={write} />
                           </Td>
-
+                          {/* <Td>Hashtags</Td> */}
+                          <Td className="remarks_wrap remarks_wrap_edit">
+                            <TagSelect
+                              setPublishedData={setPublishedData}
+                              curr={curr}
+                              index={index}
+                              write={write}
+                            />
+                          </Td>{" "}
                           {/* <Td className="description_details"><p className="desc_ht">{curr.description}</p></Td> */}
                           <Td>
                             {curr.audio_description && (
@@ -2661,7 +2899,6 @@ export default function AdminControls() {
                               )}
                             </div>
                           </Td>
-
                           <Td className="text_center">
                             {curr.type == "shared" ? (
                               <Tooltip label={"Shared"}>
@@ -2681,7 +2918,6 @@ export default function AdminControls() {
                               </Tooltip>
                             )}
                           </Td>
-
                           <Td className="text_center">
                               <Tooltip label={curr?.categoryData?.name}>
                                 <img
@@ -2701,10 +2937,11 @@ export default function AdminControls() {
                             </p>
                             <p>{image && image?.length > 0 && image?.length}</p>
                           </Td>
-
                           <Td className="text-nowrap">
                             &pound; {formatAmountInMillion(curr?.ask_price)}
                           </Td>
+                          <Td>hooper price</Td>
+                          <Td>published price</Td>
                           <Td>
                             &pound; {formatAmountInMillion(curr?.amount_paid)}
                           </Td>
@@ -2716,9 +2953,10 @@ export default function AdminControls() {
                             )}
                           </Td>
                           <Td>&pound; {curr?.amount_paid}</Td>
+                          <Td>&pound; Amount receivable</Td>
                           <Td>&pound; {curr?.commition_to_payable}</Td>
+                          <Td>&pound; {formatAmountInMillion(stripeFee)}</Td>
                           <Td>&pound; {curr?.amount_paid_to_hopper ?? "0"}</Td>
-
                           <Td>
                             &pound;{" "}
                             {curr?.amount_paid_to_hopper
@@ -2751,28 +2989,28 @@ export default function AdminControls() {
                               <span>({curr?.hopper_id?.user_name})</span>
                             </Text>
                           </Td>
-                          <Td className="select_wrap">
-                            <Select
-                              value={curr.mode}
-                              content_id={curr._id}
-                              isDisabled={
-                                profile?.subadmin_rights?.viewRightOnly &&
-                                !profile?.subadmin_rights?.controlContent
-                              }
-                              onChange={(e) => {
-                                curr.mode = e.target.value;
-                                setPublishedData((pre) => {
-                                  const updatedData = [...pre];
-                                  updatedData[index] = curr;
-                                  return updatedData;
-                                });
-                              }}
-                            >
-                              <option value="email">Email</option>
-                              <option value="chat">Chat</option>
-                              <option value="call">Call</option>
-                            </Select>
-                          </Td>
+                          {/* <Td className="select_wrap">
+                          <Select
+                            value={curr.mode}
+                            content_id={curr._id}
+                            isDisabled={
+                              profile?.subadmin_rights?.viewRightOnly &&
+                              !profile?.subadmin_rights?.controlContent
+                            }
+                            onChange={(e) => {
+                              curr.mode = e.target.value;
+                              setPublishedData((pre) => {
+                                const updatedData = [...pre];
+                                updatedData[index] = curr;
+                                return updatedData;
+                              });
+                            }}
+                          >
+                            <option value="email">Email</option>
+                            <option value="chat">Chat</option>
+                            <option value="call">Call</option>
+                          </Select>
+                        </Td> */}
                           <Td className="remarks_wrap">
                             <Textarea
                               value={curr.remarks}
@@ -2823,7 +3061,7 @@ export default function AdminControls() {
                                 className="theme_btn tbl_btn"
                                 onClick={() => PublishedUpdated(index)}
                               >
-                                Save
+                                Edit{/* Saved */}
                               </Button>
                             ) : (
                               <Button
@@ -2831,7 +3069,8 @@ export default function AdminControls() {
                                 onClick={() => PublishedUpdated(index)}
                                 disabled
                               >
-                                Save
+                                {/* Save */}
+                                Edit
                               </Button>
                             )}
                             {profile?.role === "admin" ? (
@@ -2842,6 +3081,13 @@ export default function AdminControls() {
                                 buttonTitle={"Delete"}
                               />
                             ) : null}
+                            {/* 
+                            <Button
+                              className="theme_btn tbl_btn"
+                              onClick={() => CopyLInkOfproduct(index)}
+                            >
+                              copy
+                            </Button> */}
                           </Td>
                         </Tr>
                       );
@@ -4403,3 +4649,5 @@ export default function AdminControls() {
     </>
   );
 }
+
+//Blocked content summary

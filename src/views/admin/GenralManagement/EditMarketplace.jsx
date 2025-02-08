@@ -566,7 +566,7 @@ export default function EditMarketplace() {
         `admin/Content/MoreThan/ThreeOffer?type=discount&limit=100&sortField=createdAt&sortOrder=-1`
       );
 
-    console.log("discount chal data ----->   ----->",res)
+      console.log("discount chal data ----->   ----->", res);
 
       setLoading(false);
       setDiscount({ ...discount, open: false, content: res?.data?.data });
@@ -647,6 +647,7 @@ export default function EditMarketplace() {
   const [notification, setNotification] = useState({
     open: false,
     title: "",
+    promo_code_link: "",
     body: "",
     receiver_id: [],
   });
@@ -674,9 +675,9 @@ export default function EditMarketplace() {
   };
 
   useEffect(() => {
-    console.log("discount chal")
+    console.log("discount chal");
     getContentForDiscount();
-    console.log("discount chal")
+    console.log("discount chal");
 
     getVideo("videos");
     getFaq();
@@ -787,7 +788,7 @@ export default function EditMarketplace() {
 
   //   } else {
   //     console.error("Clipboard API not supported");
-  //   } 
+  //   }
   //   console.log("copy text");
   //   inputRefPromoCode.current.select();
   //   inputRefPromoCode.current.setSelectionRange(0, 99999);
@@ -796,19 +797,18 @@ export default function EditMarketplace() {
   // }
 
   const handleCopyText = (promoCode) => {
-    console.log("check11")
+    console.log("check11");
 
     if (navigator.clipboard) {
       console.log("check12");
-      navigator.clipboard.writeText(promoCode)
+      navigator.clipboard
+        .writeText(promoCode)
         .then(() => toast.success("Promocode copied:--" + promoCode))
-        .catch(err => console.error("Failed to copy text:", err));
+        .catch((err) => console.error("Failed to copy text:", err));
     } else {
       console.error("Clipboard API not supported");
-
     }
   };
-
 
   return (
     <>
@@ -1759,6 +1759,8 @@ export default function EditMarketplace() {
                                           onClick={() =>
                                             setNotification({
                                               ...notification,
+                                              promo_code_link:
+                                                el?.code?.toUpperCase(),
                                               open: true,
                                             })
                                           }
@@ -1775,13 +1777,16 @@ export default function EditMarketplace() {
                                     />
                                     <Tooltip label="Copy">
                                       <span>
-                                         <IoIosCopy
+                                        <IoIosCopy
                                           className="p-cursor"
-                                          onClick={()=>{handleCopyText(el?.code?.toUpperCase());}}
-                                          />
-                                          </span>
+                                          onClick={() => {
+                                            handleCopyText(
+                                              el?.code?.toUpperCase()
+                                            );
+                                          }}
+                                        />
+                                      </span>
                                     </Tooltip>
-
                                   </div>
                                 </Td>
                               </Tr>
@@ -2318,6 +2323,23 @@ export default function EditMarketplace() {
                       setNotification({
                         ...notification,
                         title: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="ntf_itm_wrap">
+                  <Text mb="6px" fontSize="15px" fontFamily="AirbnbMedium">
+                    Promocode
+                  </Text>
+
+                  <Input
+                    className="msg_inp"
+                    placeholder="Enter link of content"
+                    value={notification?.promo_code_link || ""}
+                    onChange={(e) =>
+                      setNotification({
+                        ...notification,
+                        promo_code_link: e?.target?.value,
                       })
                     }
                   />

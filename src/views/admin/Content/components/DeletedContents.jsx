@@ -63,7 +63,7 @@ const DeletedContents = ({
   getDeletedContents,
   currentPageDelCont,
   getContentListPublished,
-  currentPagePublishdContent
+  currentPagePublishdContent,
 }) => {
   const textColor = useColorModeValue("#000", "white");
 
@@ -124,7 +124,8 @@ const DeletedContents = ({
                 <Th>License</Th>
                 <Th>Category</Th>
                 <Th>Volume</Th>
-                <Th>Asking price</Th>
+                <Th>Hopper price</Th>
+                <Th>Published price</Th>
                 <Th>Sale price</Th>
                 <Th>Sale status</Th>
                 <Th>Amount received</Th>
@@ -135,9 +136,7 @@ const DeletedContents = ({
                 <Th>Published by</Th>
                 <Th>Mode</Th>
                 <Th>Remarks</Th>
-                {
-                  profile?.role === "admin" ? <Th>CTA</Th> : null
-                }
+                {profile?.role === "admin" ? <Th>CTA</Th> : null}
               </Tr>
             </Thead>
             <Tbody>
@@ -157,6 +156,8 @@ const DeletedContents = ({
                 const Pdf = curr.content.filter(
                   (curr) => curr.media_type === "pdf"
                 );
+
+                // console.log("all hooper price --------> =====>", curr);
 
                 return (
                   <Tr key={curr._id}>
@@ -258,9 +259,7 @@ const DeletedContents = ({
                       </p>
                       <p className="timedate">
                         <img src={calendar} className="icn_time" />
-                        {moment(curr.published_time_date).format(
-                          "DD MMM YYYY"
-                        )}
+                        {moment(curr.published_time_date).format("DD MMM YYYY")}
                       </p>
                     </Td>
 
@@ -293,7 +292,7 @@ const DeletedContents = ({
                       <Textarea
                         className="desc_txtarea"
                         value={curr?.description}
-                        content_id={curr._id}
+                        content_id={curr?._id}
                         isDisabled={
                           profile?.subadmin_rights?.viewRightOnly &&
                           !profile?.subadmin_rights?.controlContent
@@ -413,6 +412,9 @@ const DeletedContents = ({
                       <p>{video1 && video1?.length > 0 && video1?.length}</p>
                       <p>{image && image?.length > 0 && image?.length}</p>
                     </Td>
+                    <Td className="text-nowrap">
+                      &pound; {formatAmountInMillion(curr?.original_ask_price)}
+                    </Td>
 
                     <Td className="text-nowrap">
                       &pound; {formatAmountInMillion(curr?.ask_price)}
@@ -517,25 +519,27 @@ const DeletedContents = ({
                         }}
                       />
                     </Td>
-                    {
-                      profile?.role === "admin" ? 
+                    {profile?.role === "admin" ? (
                       <Td>
-                      <PopupConfirm
-                        title="Confirmation"
-                        description="Are you sure you want to restore this content?"
-                        onConfirm={()=>handleClick({ content_id: curr?._id, is_deleted: false })}
-                        buttonTitle={"Restore"}
-                      />
-                           <PopupConfirm
-                        title="Confirmation"
-                        description="Are you sure you want to restore this content?"
-                        // onConfirm={()=>handleClick({ content_id: curr?._id, is_deleted: false })}
-                        buttonTitle={"Delete"}
-                      />
-                    
-                    </Td>
-                    : null
-                    }
+                        <PopupConfirm
+                          title="Confirmation"
+                          description="Are you sure you want to restore this content?"
+                          onConfirm={() =>
+                            handleClick({
+                              content_id: curr?._id,
+                              is_deleted: false,
+                            })
+                          }
+                          buttonTitle={"Restore"}
+                        />
+                        <PopupConfirm
+                          title="Confirmation"
+                          description="Are you sure you want to restore this content?"
+                          // onConfirm={()=>handleClick({ content_id: curr?._id, is_deleted: false })}
+                          buttonTitle={"Delete"}
+                        />
+                      </Td>
+                    ) : null}
                   </Tr>
                 );
               })}
@@ -552,7 +556,7 @@ const DeletedContents = ({
         pageCount={deletedContentPages}
         previousLabel="<"
         renderOnZeroPageCount={null}
-        forcePage={currentPageDelCont-1}
+        forcePage={currentPageDelCont - 1}
       />
     </Card>
   );

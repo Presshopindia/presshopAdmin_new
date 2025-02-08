@@ -12,8 +12,9 @@ import {
   useColorModeValue,
   Button,
   Checkbox,
-  Tooltip
+  Tooltip,
 } from "@chakra-ui/react";
+import moment from "moment/moment";
 import video from "assets/img/icons/video.svg";
 import Card from "components/card/Card";
 import contentic from "assets/img/icons/content.png";
@@ -36,8 +37,7 @@ import SortFilterTop from "components/sortfilters/SortFilterTop";
 import ActionSort from "components/sortfilters/AcrionSort";
 
 //pdf generation package
-import jsPDF from 'jspdf';
- 
+import jsPDF from "jspdf";
 
 // new imports end
 
@@ -45,6 +45,9 @@ export default function Payments() {
   const history = useHistory();
   const textColor = useColorModeValue("#000", "black");
   const [show, setShow] = useState(false);
+
+  const [amountTobePaid, setAmountTobePaid] = useState("");
+  const [reasonTobePaid, setReasonTobePaid] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -53,7 +56,7 @@ export default function Payments() {
   const [dataWithCheckboxes, setDataWithCheckboxes] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentImageIndices, setCurrentImageIndices] = useState({});
- 
+  const [dataApproved, setDataApproved] = useState("");
 
   const getData = (page, parametersName, parameters) => {
     const offset = (page - 1) * perPage;
@@ -89,7 +92,7 @@ export default function Payments() {
     setSelectedIds(isChecked ? dataWithCheckboxes.map((item) => item._id) : []);
   };
 
-  const handleCheckboxClick = (id) => {
+  const handleCheckboxApproved = (id) => {
     setDataWithCheckboxes((prevData) =>
       prevData.map((item) =>
         item._id === id ? { ...item, checked: !item.checked } : item
@@ -134,7 +137,7 @@ export default function Payments() {
   };
 
   const downloadCsvFileOfPayments = async (e) => {
-    generatePDF()
+    generatePDF();
     // const offset = (currentPage - 1) * perPage;
     // try {
     //   const response = await Get(
@@ -149,14 +152,13 @@ export default function Payments() {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-  
+
     // Add content to the PDF
-    doc.text('Hello, this is your PDF!', 10, 10);
-  
+    doc.text("Hello, this is your PDF!", 10, 10);
+
     // Save the PDF
-    doc.save('myPDF.pdf');
+    doc.save("myPDF.pdf");
   };
-  
 
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
@@ -221,7 +223,8 @@ export default function Payments() {
                 fontFamily={"AirbnbBold"}
                 lineHeight="100%"
               >
-                Payments
+                {/* Payments */}
+                Payment to Hoppers
               </Text>
               <div className="opt_icons_wrap">
                 <div className="fltr_btn">
@@ -254,9 +257,13 @@ export default function Payments() {
                   </Tooltip>
                 </a>
                 <span>
-                <Tooltip label={"Print"}>
-                  <img src={print} className="opt_icons" onClick={downloadCsvFileOfPayments}/>
-                </Tooltip>
+                  <Tooltip label={"Print"}>
+                    <img
+                      src={print}
+                      className="opt_icons"
+                      onClick={downloadCsvFileOfPayments}
+                    />
+                  </Tooltip>
                 </span>
               </div>
             </Flex>
@@ -299,11 +306,22 @@ export default function Payments() {
                       {/* Select all */}
                     </Th>
                     <Th>Hoppers</Th>
+                    <Th>Time & date of joining</Th>
+                    <Th>Address</Th>
+                    <Th>Contact details</Th>
+                    <Th>Class</Th>
+                    <Th>Rating</Th>
+                    <Th>Uploaded documents</Th>
+                    <Th>Banking details</Th>
+                    <Th>Amount to be paid</Th>
+                    <Th>Reason for payment</Th>
+
                     <Th>Content</Th>
                     <Th className="licnc_type_th">Type</Th>
                     <Th>Received from publication</Th>
                     <Th>Presshop commission</Th>
                     <Th>Payable to hopper</Th>
+                    <Th>Approved</Th>
                     {/* <Th>Last paid</Th> */}
                     <Th textAlign="center">Action</Th>
                   </Tr>
@@ -322,7 +340,8 @@ export default function Payments() {
                         const profile_image =
                           curr.hopper_details[0]?.avatar_details[0]?.avatar ||
                           "";
-                          const setId = curr?.transictions_content[0]?.content_id?._id
+                        const setId =
+                          curr?.transictions_content[0]?.content_id?._id;
 
                         {
                           /* 
@@ -331,6 +350,21 @@ export default function Payments() {
                         const singleContent = transictionsContent?.[0]?.content_id?.content; */
                         }
 
+                        let hopperAddress = curr?.hopper_details?.[0]?.address;
+                        let hopperPhone =
+                          curr?.hopper_details?.[0]?.country_code +
+                          curr?.hopper_details?.[0]?.phone;
+                        let hopperEmail = curr?.hopper_details?.[0]?.email;
+                        let hopperCategory =
+                          curr?.hopper_details?.[0]?.category;
+                        let hopperBank =
+                          curr?.hopper_details?.[0]?.bank_detail?.[0];
+
+                        console.log(
+                          "all current data------> -----> data",
+                          curr
+                        );
+
                         return (
                           <Tr key={curr._id}>
                             <Td className="text_center check_center">
@@ -338,7 +372,9 @@ export default function Payments() {
                                 colorScheme="brandScheme"
                                 me="10px"
                                 isChecked={selectedIds.includes(curr?._id)}
-                                onChange={() => handleCheckboxClick(curr?._id)}
+                                onChange={() =>
+                                  handleCheckboxApproved(curr?._id)
+                                }
                               />
                             </Td>
                             <Td className="item_detail">
@@ -360,6 +396,54 @@ export default function Payments() {
                                   <span>({userName})</span>
                                 </Text>
                               </a>
+                            </Td>
+                            <Td className="timedate_wrap">
+                              <p className="timedate">
+                                <img src={watch} className="icn_time" />
+                                {moment(curr?.createdAt).format("hh:mm A")}
+                              </p>
+                              <p className="timedate">
+                                <img src={calendar} className="icn_time" />
+                                {moment(curr?.createdAt).format("DD MMM YYYY")}
+                              </p>
+                            </Td>
+
+                            <Td className="item_detail">
+                              <Text className="nameimg naming_comn">
+                                {hopperAddress}
+                              </Text>
+                            </Td>
+                            <Td>
+                              <Text className="nameimg naming_comn">
+                                <p>Phone --{hopperPhone} </p>
+                                <p>Email- {hopperEmail}</p>
+                              </Text>
+                            </Td>
+                            <Td>{hopperCategory == "amateur" ? "A" : "P"}</Td>
+                            <Td> 4</Td>
+                            <Td> no documents</Td>
+                            <Td>
+                              <h5>{hopperBank?.bank_name}</h5>
+                              <p>Sort Code- {hopperBank?.sort_code}</p>
+                              <p>Account- {hopperBank?.acc_number}</p>
+                            </Td>
+                            <Td>
+                              <input
+                                placeholder="Enter amount"
+                                value={amountTobePaid}
+                                onChange={(e) => {
+                                  setAmountTobePaid(e?.target?.value);
+                                }}
+                              />
+                            </Td>
+                            <Td>
+                              <input
+                                placeholder="Enter amount"
+                                value={reasonTobePaid}
+                                onChange={(e) => {
+                                  setReasonTobePaid(e?.target?.value);
+                                }}
+                              />
                             </Td>
 
                             <Td className="cont_pmnt_td">
@@ -483,9 +567,11 @@ export default function Payments() {
                                   )
                                 ) : curr?.transictions_content[0]?.content_id
                                     ?.content?.length > 1 ? (
-                                 
                                   <div className="content_container">
-                                    <div className="content_imgs" style={{minHeight:"60px"}}>
+                                    <div
+                                      className="content_imgs"
+                                      style={{ minHeight: "60px" }}
+                                    >
                                       {curr?.transictions_content[0]?.content_id?.content.map(
                                         (value, index) => (
                                           <div
@@ -493,7 +579,9 @@ export default function Payments() {
                                             key={value._id}
                                             style={{
                                               display:
-                                                index === (currentImageIndices[setId] || 0)
+                                                index ===
+                                                (currentImageIndices[setId] ||
+                                                  0)
                                                   ? "block"
                                                   : "none",
                                             }}
@@ -527,12 +615,19 @@ export default function Payments() {
                                       <span
                                         className="arrow_span"
                                         onClick={() =>
-                                          setCurrentImageIndices(prevIndices => {
-                                            // console.log("id",setId)
-                                            const newIndices = { ...prevIndices };
-                                            newIndices[setId] = ((newIndices[setId] || 0) + 1 ) % curr?.transictions_content[0]?.content_id?.content.length;
-                                            return newIndices;
-                                          })
+                                          setCurrentImageIndices(
+                                            (prevIndices) => {
+                                              // console.log("id",setId)
+                                              const newIndices = {
+                                                ...prevIndices,
+                                              };
+                                              newIndices[setId] =
+                                                ((newIndices[setId] || 0) + 1) %
+                                                curr?.transictions_content[0]
+                                                  ?.content_id?.content.length;
+                                              return newIndices;
+                                            }
+                                          )
                                         }
                                       >
                                         <BsArrowLeft />
@@ -541,11 +636,22 @@ export default function Payments() {
                                       <span
                                         className="arrow_span"
                                         onClick={() =>
-                                          setCurrentImageIndices(prevIndices => {
-                                            const newIndices = { ...prevIndices };
-                                            newIndices[setId] = ((newIndices[setId] || 0) - 1 + curr?.transictions_content[0]?.content_id?.content.length) % curr?.transictions_content[0]?.content_id?.content.length;
-                                            return newIndices;
-                                          })
+                                          setCurrentImageIndices(
+                                            (prevIndices) => {
+                                              const newIndices = {
+                                                ...prevIndices,
+                                              };
+                                              newIndices[setId] =
+                                                ((newIndices[setId] || 0) -
+                                                  1 +
+                                                  curr?.transictions_content[0]
+                                                    ?.content_id?.content
+                                                    .length) %
+                                                curr?.transictions_content[0]
+                                                  ?.content_id?.content.length;
+                                              return newIndices;
+                                            }
+                                          )
                                         }
                                       >
                                         <BsArrowRight />
@@ -621,11 +727,11 @@ export default function Payments() {
                                 {curr?.transictions_content.length > 0 &&
                                   curr?.transictions_task.length === 0 && (
                                     <Tooltip label={"Video"}>
-                                    <img
-                                      src={contentic}
-                                      className="icn"
-                                      alt=""
-                                    />
+                                      <img
+                                        src={contentic}
+                                        className="icn"
+                                        alt=""
+                                      />
                                     </Tooltip>
                                   )}
 
@@ -636,13 +742,37 @@ export default function Payments() {
                               </Flex>
                             </Td>
 
-                            <Td>&pound; {curr?.recived_from_mediahouse.toFixed(2)}</Td>
-                            <Td>&pound; {curr?.presshop_commission.toFixed(2)}</Td>
-                            <Td>&pound; {curr?.payable_to_hopper.toFixed(2)}</Td>
+                            <Td>
+                              &pound; {curr?.recived_from_mediahouse.toFixed(2)}
+                            </Td>
+                            <Td>
+                              &pound; {curr?.presshop_commission.toFixed(2)}
+                            </Td>
+                            <Td>
+                              &pound; {curr?.payable_to_hopper.toFixed(2)}
+                            </Td>
                             {/* <Td className="timedate_wrap">
                               <p className="timedate"><img src={watch} className="icn_time" />12:30 Am</p>
                               <p className="timedate"><img src={calendar} className="icn_time" />12 july 2022</p>
                             </Td> */}
+
+                            <Td className="text_center check_center">
+                              <Checkbox
+                                colorScheme="brandScheme"
+                                me="10px"
+                                isChecked={dataApproved.includes(curr._id)}
+                                onChange={() => {
+                                  setDataApproved((prevIds) =>
+                                    prevIds.includes(curr._id)
+                                      ? prevIds.filter(
+                                          (selectedId) =>
+                                            selectedId !== curr._id
+                                        )
+                                      : [...prevIds, curr._id]
+                                  );
+                                }}
+                              />
+                            </Td>
                             <Td textAlign="center">
                               {/* <a onClick={() => { history.push(`/admin/payment-view/${curr?._id}`) }}>
                               </a> */}

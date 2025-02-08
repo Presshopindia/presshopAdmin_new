@@ -17,8 +17,14 @@ import { requestForToken } from "components/NotificationToken";
 import { PendingMsgProvider } from "contexts/PendindMsgContext";
 
 
+<<<<<<< Updated upstream
 const user = JSON.parse(localStorage.getItem("user"));
 
+=======
+
+let user = localStorage.getItem("user");
+user = JSON.parse(user);
+>>>>>>> Stashed changes
 ReactDOM.render(
   <ChakraProvider theme={theme}>
     <Data>
